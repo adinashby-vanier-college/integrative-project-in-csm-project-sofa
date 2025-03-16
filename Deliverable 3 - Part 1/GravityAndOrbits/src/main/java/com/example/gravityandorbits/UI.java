@@ -41,7 +41,7 @@ public class UI extends Parent {
         Menu helpUserGuide = new Menu("Help/User Guide");
         MenuItem help = new MenuItem("Help");
         help.setOnAction(e -> {
-            helpButton();
+            HelpInterface.LoadHelpInterface();
         });
         MenuItem userGuide = new MenuItem("User Guide");
         userGuide.setOnAction(e -> {
@@ -190,7 +190,7 @@ public class UI extends Parent {
     }
 
     // Set the functionality for help button
-    public void helpButton() {
+   /* public void helpButton() {
         Stage stage = new Stage();
         Label helpText = new Label("Insert help text here");
         helpText.setScaleX(2);
@@ -201,7 +201,7 @@ public class UI extends Parent {
         stage.setScene(scene);
         stage.setTitle("Help");
         stage.show();
-    }
+    }*/
 
     // Set the functionality for user guide button
     public void userGuideButton() {
