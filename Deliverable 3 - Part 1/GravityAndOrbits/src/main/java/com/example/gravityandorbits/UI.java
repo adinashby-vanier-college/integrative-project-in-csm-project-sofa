@@ -42,7 +42,7 @@ public class UI extends Parent {
         Menu helpUserGuide = new Menu("Help/User Guide");
         MenuItem help = new MenuItem("Help");
         help.setOnAction(e -> {
-            helpButton();
+            HelpInterface.LoadHelpInterface();
         });
         MenuItem userGuide = new MenuItem("User Guide");
         userGuide.setOnAction(e -> {
