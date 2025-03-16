@@ -2,10 +2,11 @@ package com.example.gravityandorbits;
 
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
-import javafx.geometry.Orientation;
-import javafx.geometry.Pos;
+import javafx.geometry.*;
 import javafx.scene.Cursor;
 import javafx.scene.Parent;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -53,7 +54,7 @@ public class UI extends Parent {
         menuBar.getMenus().addAll(Exit, file, settings, helpUserGuide);
         root.setTop(menuBar);
 
-        // Left menu
+        // Left side
         GridPane topLeftGrid = new GridPane();
         topLeftGrid.setAlignment(Pos.TOP_LEFT);
         topLeftGrid.setGridLinesVisible(false);
@@ -118,16 +119,16 @@ public class UI extends Parent {
         topLeftGrid.add(selectPlanet2, 1 ,2);
         topLeftGrid.add(addCustomPlanet, 1, 9);
 
-        Separator hSeparator = new Separator();
-        hSeparator.setScaleX(39);
-        hSeparator.setScaleY(3);
-        hSeparator.setLayoutY(370);
+        Separator separator1 = new Separator();
+        separator1.setScaleX(39);
+        separator1.setScaleY(3);
+        separator1.setLayoutY(370);
 
-        Separator vSeparator = new Separator();
-        vSeparator.setScaleX(2);
-        vSeparator.setOrientation(Orientation.VERTICAL);
-        vSeparator.setLayoutX(200);
-        vSeparator.setPrefHeight(710);
+        Separator separator2 = new Separator();
+        separator2.setScaleX(3);
+        separator2.setOrientation(Orientation.VERTICAL);
+        separator2.setLayoutX(200);
+        separator2.setPrefHeight(710);
 
         Label textPreset = new Label("Select Preset");
         textPreset.setLayoutX(20);
@@ -182,9 +183,85 @@ public class UI extends Parent {
         });
 
         Pane leftContainer = new Pane();
-        leftContainer.getChildren().addAll(topLeftGrid, hSeparator, vSeparator,
+        leftContainer.getChildren().addAll(topLeftGrid, separator1, separator2,
                 textPreset, preset1, preset2, preset3);
         root.setLeft(leftContainer);
+
+        // Right side
+
+        Slider massMultiplier = new Slider(0.5, 3.5, 1);
+        Slider radiusMultiplier = new Slider(0.5, 3.5, 1);
+        massMultiplier.setShowTickLabels(true);
+        massMultiplier.setShowTickMarks(true);
+        radiusMultiplier.setShowTickLabels(true);
+        radiusMultiplier.setShowTickMarks(true);
+
+        Label planetName = new Label();
+        planetName.setText("Planet's Parameters");
+        Label velocity = new Label();
+        velocity.setText("Velocity: 0 m/s");
+
+        VBox topRight = new VBox();
+        topRight.setLayoutX(0);  //was 500
+        topRight.setSpacing(40);
+        topRight.setPadding(new Insets(25));
+        topRight.getChildren().addAll(planetName, velocity,
+                massMultiplier, radiusMultiplier);
+
+        Separator separator3 = new Separator();
+        separator3.setScaleX(33);
+        separator3.setScaleY(3);
+        separator3.setLayoutX(165);
+        separator3.setLayoutY(370);
+
+        Separator separator4 = new Separator();
+        separator4.setOrientation(Orientation.VERTICAL);
+        separator4.setScaleX(3);
+        separator4.setPrefHeight(710);
+        separator4.setLayoutX(5);
+        separator4.setLayoutY(0);
+
+
+        CheckBox showPath = new CheckBox("Show Path");
+        CheckBox showGVectors = new CheckBox("Show Gravity Vectors");
+        CheckBox showVVectors = new CheckBox("Show Velocity Vectors");
+        CheckBox showGrid = new CheckBox("Show Grid");
+
+        Slider scale = new Slider();
+        Slider time = new Slider();
+        Label scaleLabel = new Label("Scale");
+        Label timeLabel = new Label("Time");
+
+        VBox bottomRight = new VBox();
+        bottomRight.setSpacing(17);
+        bottomRight.setLayoutX(20);
+        bottomRight.setLayoutY(390);
+        bottomRight.getChildren().addAll(showPath, showGVectors, showVVectors,
+                showGrid, scaleLabel, scale, timeLabel, time);
+
+        Button start = new Button("Start");
+        Button pause = new Button("Stop");
+        Button reset = new Button("Reset");
+
+        start.setLayoutX(20);
+        start.setLayoutY(670);
+        pause.setLayoutX(70);
+        pause.setLayoutY(670);
+        reset.setLayoutX(120);
+        reset.setLayoutY(670);
+
+        Pane rightContainer = new Pane();
+        rightContainer.getChildren().addAll(topRight, separator3, separator4,
+                bottomRight, start, pause, reset);
+        root.setRight(rightContainer);
+
+        // Outer space (center)
+        Canvas canvas = new Canvas(875, 710);
+        GraphicsContext gc = canvas.getGraphicsContext2D();
+        gc.setFill(Color.BLACK);
+        gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+
+        root.setCenter(canvas);
 
         return root;
     }
@@ -224,17 +301,17 @@ public class UI extends Parent {
         Text text = new Text("Are you sure you want to exit the application?");
         Button yes = new Button("Yes");
         Button no = new Button("No");
-        text.setLayoutX(70);
+        text.setLayoutX(80);
         text.setLayoutY(40);
         text.setScaleX(1.2);
         text.setScaleY(1.2);
         yes.setLayoutX(100);
-        yes.setLayoutY(100);
+        yes.setLayoutY(130);
         yes.setScaleX(1.2);
         yes.setScaleY(1.2);
         yes.setPrefSize(50, 10);
-        no.setLayoutX(260);
-        no.setLayoutY(100);
+        no.setLayoutX(270);
+        no.setLayoutY(130);
         no.setScaleX(1.2);
         no.setScaleY(1.2);
         no.setPrefSize(50, 10);
