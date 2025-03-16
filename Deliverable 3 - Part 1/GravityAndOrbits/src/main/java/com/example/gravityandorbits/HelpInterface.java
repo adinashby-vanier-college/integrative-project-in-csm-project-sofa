@@ -40,8 +40,8 @@ public class HelpInterface {
       
       Image Diagram=new Image("file:helpcenter.png");
       ImageView DiagramView= new ImageView(Diagram);
-      DiagramView.setFitWidth(200);
-      DiagramView.setFitHeight(200);
+      DiagramView.setFitWidth(100);
+      DiagramView.setFitHeight(100);
       DiagramView.setPreserveRatio(true);
       
       BorderPane content=new BorderPane();
