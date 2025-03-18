@@ -10,7 +10,7 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         UI ui = new UI();
-        Scene scene = new Scene(ui.initialize());
+        Scene scene = new Scene(ui.initialize(), ui.SCREENWIDTH, ui.SCREENHEIGHT);
         stage.setTitle("Gravity and Orbits");
         stage.setScene(scene);
         stage.setMaximized(true);

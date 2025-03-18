@@ -3,13 +3,18 @@ package com.example.gravityandorbits;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.geometry.*;
+import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -17,7 +22,12 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.awt.*;
+
 public class UI extends Parent {
+
+    public final double SCREENWIDTH = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
+    public final double SCREENHEIGHT = Toolkit.getDefaultToolkit().getScreenSize().getHeight();
 
     private int rowCount = 0;
     private Text warningMsg = new Text("Cannot add more than 5 planets.");
@@ -128,7 +138,7 @@ public class UI extends Parent {
         separator2.setScaleX(3);
         separator2.setOrientation(Orientation.VERTICAL);
         separator2.setLayoutX(200);
-        separator2.setPrefHeight(710);
+        separator2.setPrefHeight(SCREENHEIGHT);
 
         Label textPreset = new Label("Select Preset");
         textPreset.setLayoutX(20);
@@ -217,10 +227,9 @@ public class UI extends Parent {
         Separator separator4 = new Separator();
         separator4.setOrientation(Orientation.VERTICAL);
         separator4.setScaleX(3);
-        separator4.setPrefHeight(710);
+        separator4.setPrefHeight(SCREENHEIGHT);
         separator4.setLayoutX(5);
         separator4.setLayoutY(0);
-
 
         CheckBox showPath = new CheckBox("Show Path");
         CheckBox showGVectors = new CheckBox("Show Gravity Vectors");
