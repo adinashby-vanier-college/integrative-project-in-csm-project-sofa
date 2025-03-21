@@ -265,7 +265,7 @@ public class UI extends Parent {
         root.setRight(rightContainer);
 
         // Outer space (center)
-        Canvas canvas = new Canvas(875, 710);
+        Canvas canvas = new Canvas(1520, 990);
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.setFill(Color.BLACK);
         gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
