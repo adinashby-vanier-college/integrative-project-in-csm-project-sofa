@@ -8,9 +8,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to ed
 */
 
 .root{
-    -fx-background-color:white;
     -fx-font-family:serif; 
-    -fx-font-size:13pt;
+    -fx-font-size:10pt;
 }
 
 .button{
@@ -25,12 +24,16 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to ed
 
 }
 
-.black-background{
-    -fx-background-color:black;
-    /*squared background*/ 
-    
-}
-
 .border{
     -fx-border-color:black;
+}
+
+.title{
+    -fx-font-weight:bold;
+    -fx-underline:true;
+}
+
+.help{
+    -fx-font-family:serif; 
+    -fx-font-size:13pt;  
 }

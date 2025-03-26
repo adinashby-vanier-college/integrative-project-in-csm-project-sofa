@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollBar;
 import javafx.geometry.Orientation;
+import javafx.geometry.Pos;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.control.ScrollPane;
@@ -26,29 +27,41 @@ public class HelpInterface {
       Stage stage= new Stage();
       stage.setTitle("Help");
      
-      String instructions1="Certainly elsewhere my do allowance at. The address farther six hearted hundred towards husband. Are securing off occasion remember daughter replying. Held that feel his see own yet. Strangers ye to he sometimes propriety in. She right plate seven has. Bed who perceive judgment did marianne.\n" +
-"\n" +
-"Her extensive perceived may any sincerity extremity. Indeed add rather may pretty see. Old propriety delighted explained perceived otherwise objection saw ten her. Doubt merit sir the right these alone keeps. By sometimes intention smallness he northward. Consisted we otherwise arranging commanded discovery it explained. Does cold even song like two yet been. Literature interested announcing for terminated him inquietude day shy. Himself he fertile chicken perhaps waiting if highest no it. Continued promotion has consulted fat improving not way.\n" +
-"\n" +
-"In to am attended desirous raptures declared diverted confined at. Collected instantly remaining up certainly to necessary as. Over walk dull into son boy door went new. At or happiness commanded daughters as. Is handsome an declared at received in extended vicinity subjects. Into miss on he over been late pain an. Only week bore boy what fat case left use. Match round scale now sex style far times. Your me past an much.";
+      String intro="This application will help you understand the theory of gravitational force between planets. You will be able to see how the force is affected by different factors with vectors and path like down below.";
+      String features="FEATURES";
       
-      String instructions2="";
-      Label text1= new Label(instructions1);
+      String instructions2= """
+                            Add Planets: Click on 'Add Custom Planet' up to 5 planets / or Select from the presets.
+                            Change Parameters: Interact with the slider 'Mass Multiplier/Radius Multiplier' on the right side.
+                            Show Grid: Click the checkbox 'Show Grid'.
+                            Show Path: Click the checkbox 'Show Path'.
+                            Show Vectors: Click the corresponding checkbox 'Show Gravity Vectors/Show Velocity Vectors'.
+                            Change Scale: Interact with the slider 'Scale'.
+                            Change Time: Interact with the slider 'Time'.
+                            Start/Pause Animation: Click on the corresponding buttons 'Start/Pause'.
+                            Reset Animation: Click on the button 'Reset'. 
+                            Save Project: Click on File and then click on save.""";
+
+      Label text1= new Label(intro);
       text1.setWrapText(true);
-      Label text2= new Label(instructions1);
+      text1.setLineSpacing(10);
+      
+      Label featuresText= new Label(features);
+      featuresText.getStyleClass().add("title");
+      
+      Label text2= new Label(instructions2);
       text2.setWrapText(true);
+      text2.setLineSpacing(10);
       
       Image Diagram=new Image("file:helpcenter.png");
       ImageView DiagramView= new ImageView(Diagram);
-      DiagramView.setFitWidth(100);
-      DiagramView.setFitHeight(100);
+      DiagramView.setFitWidth(200);
+      DiagramView.setFitHeight(200);
       DiagramView.setPreserveRatio(true);
       
-      BorderPane content=new BorderPane();
-      content.setTop(text1);
-      content.setCenter(DiagramView);
-      content.setBottom(text2);
-      content.getStyleClass().add("root");
+      VBox content= new VBox(10,text1,DiagramView,featuresText,text2);
+      content.setAlignment(Pos.CENTER);
+      content.getStyleClass().add("help");
           
       ScrollPane SP= new ScrollPane();
       SP.setContent(content);
@@ -56,7 +69,7 @@ public class HelpInterface {
       SP.setPadding(new Insets(10));
       SP.getStyleClass().add("border");
 
-      Scene scene= new Scene(SP,500,500);  
+      Scene scene= new Scene(SP,600,600);  
       scene.getStylesheets().add("style.css");
       stage.setScene(scene);
       stage.show();
