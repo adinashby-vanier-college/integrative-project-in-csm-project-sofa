@@ -14,6 +14,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -254,7 +255,6 @@ public class UI extends Parent {
         rightContainer.getChildren().addAll(topRight, separator3, separator4,
                 bottomRight, start, pause, reset);
         root.setRight(rightContainer);
-
         // Outer space (center)
         Canvas canvas = new Canvas(875, 710);
         GraphicsContext gc = canvas.getGraphicsContext2D();
@@ -262,7 +262,6 @@ public class UI extends Parent {
         gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
         root.setCenter(canvas);
-
         return root;
     }
 
