@@ -31,8 +31,10 @@ public class UI extends Parent {
     public final double SCREENWIDTH = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
     public final double SCREENHEIGHT = Toolkit.getDefaultToolkit().getScreenSize().getHeight();
 
+    private static final double G = 6.6743e-11;
     private String selectedPlanet1 = null;
     private String selectedPlanet2 = null;
+    private String selectedPlanetType = null;
     private int rowCount = 0;
     private final Text warningMsg = new Text("Cannot add more than 5 planets.");
     MenuItem sun = new MenuItem("Sun");
@@ -41,6 +43,8 @@ public class UI extends Parent {
     MenuItem mars = new MenuItem("Mars");
     MenuItem venus = new MenuItem("Venus");
     MenuItem neptune = new MenuItem("Neptune");
+
+
 
     public BorderPane initialize() {
         BorderPane root = new BorderPane();
@@ -75,35 +79,12 @@ public class UI extends Parent {
         topLeftGrid.setHgap(20);
         topLeftGrid.setVgap(/*20*/45);
 
-        // 1st button
-        MenuButton selectPlanet1 = new MenuButton("Select Planet 1"); rowCount++;
-        String[] planetNames = {"Sun", "Earth", "Moon", "Mars", "Venus", "Neptune"};
-        for (String planetName : planetNames) {
-            MenuItem item = new MenuItem(planetName);
-            item.setOnAction(e -> {
-                selectedPlanet1 = planetName;
-                selectPlanet1.setText(selectedPlanet1);
-            });
-            selectPlanet1.getItems().add(item);
-        }
-        selectPlanet1.setMinSize(160, 10);
-
-        MenuButton selectPlanet2 = new MenuButton("Select Planet 2"); rowCount++;
-        String[] planetNames2 = {"Sun", "Earth", "Moon", "Mars", "Venus", "Neptune"};
-        for (String planetName : planetNames2) {
-            MenuItem item = new MenuItem(planetName);
-            item.setOnAction(e -> {
-                selectedPlanet2 = planetName;
-                selectPlanet2.setText(selectedPlanet2);
-            });
-            selectPlanet2.getItems().add(item);
-        }
-        selectPlanet2.setMinSize(160, 10);
+        ToggleGroup toggleGroup = new ToggleGroup();
 
         Button addCustomPlanet = new Button("Add Custom Planet");
         addCustomPlanet.setOnAction(e -> {
             if (rowCount < 5) {
-                topLeftGrid.add(addCustomPlanet(rowCount), 1, (rowCount+1));
+                addPlanet(topLeftGrid, toggleGroup, 1,rowCount + 1);
             }
             rowCount++;
             if (rowCount > 5) {
@@ -119,9 +100,6 @@ public class UI extends Parent {
             }
 
         });
-
-        topLeftGrid.add(selectPlanet1, 1, 1);
-        topLeftGrid.add(selectPlanet2, 1 ,2);
         topLeftGrid.add(addCustomPlanet, 1,/*9*/7);
 
         Separator separator1 = new Separator();
@@ -315,10 +293,12 @@ public class UI extends Parent {
         massMultiplier.setMajorTickUnit(0.5);
         massMultiplier.setMinorTickCount(0);
         massMultiplier.setShowTickMarks(true);
+        massMultiplier.setSnapToTicks(true);
         radiusMultiplier.setShowTickLabels(true);
         radiusMultiplier.setShowTickMarks(true);
         radiusMultiplier.setMajorTickUnit(0.5);
         radiusMultiplier.setMinorTickCount(0);
+        radiusMultiplier.setSnapToTicks(true);
 
         Label planetName = new Label();
         planetName.setText("Planet's Parameters");
@@ -413,7 +393,11 @@ public class UI extends Parent {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.setFill(Color.BLACK);
         gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        
+
+        /*canvas.setOnMouseClicked(event -> {
+            if ()
+        });*/
+
         //To show grid
         showGrid.setOnAction(e->{
         if(showGrid.isSelected()){    
@@ -528,4 +512,34 @@ public class UI extends Parent {
         return selectPlanetX;
     }
 
+    public void addPlanet(GridPane gridPane, ToggleGroup togglegroup, int row, int column) {
+        Stage planetStage = new Stage();
+        Button done = new Button("Done");
+        MenuButton planetType = new MenuButton("Select Planet Type");
+
+        String[] planetNames = {"Sun", "Earth", "Moon", "Mars", "Venus", "Neptune"};
+
+        for (String planetName : planetNames) {
+            MenuItem item = new MenuItem(planetName);
+            item.setOnAction(e -> {
+                selectedPlanetType = planetName;
+                planetType.setText(selectedPlanetType);
+            });
+            planetType.getItems().add(item);
+        }
+
+        done.setOnAction(e -> {
+            planetStage.close();
+            ToggleButton toggleButton = new ToggleButton(selectedPlanetType);
+            toggleButton.setToggleGroup(togglegroup);
+            toggleButton.setPrefSize(160, 10);
+            gridPane.add(toggleButton, row, column);
+        });
+
+        planetType.setMinSize(160, 10);
+        VBox vbox = new VBox(planetType, done);
+        Scene scene = new Scene(vbox);
+        planetStage.setScene(scene);
+        planetStage.show();
+    }
 }
