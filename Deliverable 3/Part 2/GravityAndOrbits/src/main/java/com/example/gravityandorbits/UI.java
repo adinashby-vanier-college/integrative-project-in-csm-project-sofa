@@ -29,6 +29,8 @@ public class UI extends Parent {
     public final double SCREENWIDTH = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
     public final double SCREENHEIGHT = Toolkit.getDefaultToolkit().getScreenSize().getHeight();
 
+    private String selectedPlanet1 = null;
+    private String selectedPlanet2 = null;
     private int rowCount = 0;
     private final Text warningMsg = new Text("Cannot add more than 5 planets.");
     MenuItem sun = new MenuItem("Sun");
@@ -73,36 +75,27 @@ public class UI extends Parent {
 
         // 1st button
         MenuButton selectPlanet1 = new MenuButton("Select Planet 1"); rowCount++;
-        MenuItem sun1 = new MenuItem(sun.getText());
-        MenuItem earth1 = new MenuItem(earth.getText());
-        MenuItem moon1 = new MenuItem(moon.getText());
-        MenuItem mars1 = new MenuItem(mars.getText());
-        MenuItem venus1 = new MenuItem(venus.getText());
-        MenuItem neptune1 = new MenuItem(neptune.getText());
-        selectPlanet1.getItems().addAll(sun1, earth1, moon1, mars1, venus1, neptune1);
-        sun1.setOnAction(e -> selectPlanet1.setText(sun1.getText()));
-        earth1.setOnAction(e -> selectPlanet1.setText(earth1.getText()));
-        moon1.setOnAction(e -> selectPlanet1.setText(moon1.getText()));
-        mars1.setOnAction(e -> selectPlanet1.setText(mars1.getText()));
-        venus1.setOnAction(e -> selectPlanet1.setText(venus1.getText()));
-        neptune1.setOnAction(e -> selectPlanet1.setText(neptune1.getText()));
+        String[] planetNames = {"Sun", "Earth", "Moon", "Mars", "Venus", "Neptune"};
+        for (String planetName : planetNames) {
+            MenuItem item = new MenuItem(planetName);
+            item.setOnAction(e -> {
+                selectedPlanet1 = planetName;
+                selectPlanet1.setText(selectedPlanet1);
+            });
+            selectPlanet1.getItems().add(item);
+        }
         selectPlanet1.setMinSize(160, 10);
 
-        // 2nd button
         MenuButton selectPlanet2 = new MenuButton("Select Planet 2"); rowCount++;
-        MenuItem sun2 = new MenuItem(sun.getText());
-        MenuItem earth2 = new MenuItem(earth.getText());
-        MenuItem moon2 = new MenuItem(moon.getText());
-        MenuItem mars2 = new MenuItem(mars.getText());
-        MenuItem venus2 = new MenuItem(venus.getText());
-        MenuItem neptune2 = new MenuItem(neptune.getText());
-        selectPlanet2.getItems().addAll(sun2, earth2, moon2, mars2, venus2, neptune2);
-        sun2.setOnAction(e -> selectPlanet2.setText(sun2.getText()));
-        earth2.setOnAction(e -> selectPlanet2.setText(earth2.getText()));
-        moon2.setOnAction(e -> selectPlanet2.setText(moon2.getText()));
-        mars2.setOnAction(e -> selectPlanet2.setText(mars2.getText()));
-        venus2.setOnAction(e -> selectPlanet2.setText(venus2.getText()));
-        neptune2.setOnAction(e -> selectPlanet2.setText(neptune2.getText()));
+        String[] planetNames2 = {"Sun", "Earth", "Moon", "Mars", "Venus", "Neptune"};
+        for (String planetName : planetNames2) {
+            MenuItem item = new MenuItem(planetName);
+            item.setOnAction(e -> {
+                selectedPlanet2 = planetName;
+                selectPlanet2.setText(selectedPlanet2);
+            });
+            selectPlanet2.getItems().add(item);
+        }
         selectPlanet2.setMinSize(160, 10);
 
         Button addCustomPlanet = new Button("Add Custom Planet");
@@ -281,7 +274,7 @@ public class UI extends Parent {
         
 
         // Outer space (center)
-        Canvas canvas = new Canvas(1520, 990);
+        Canvas canvas = new Canvas(1100, 990);
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.setFill(Color.BLACK);
         gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
