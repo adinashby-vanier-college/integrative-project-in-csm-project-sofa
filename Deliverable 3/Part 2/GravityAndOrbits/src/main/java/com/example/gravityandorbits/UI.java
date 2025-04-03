@@ -23,6 +23,8 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.awt.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 public class UI extends Parent {
 
@@ -71,7 +73,7 @@ public class UI extends Parent {
         topLeftGrid.setAlignment(Pos.TOP_LEFT);
         topLeftGrid.setGridLinesVisible(false);
         topLeftGrid.setHgap(20);
-        topLeftGrid.setVgap(20);
+        topLeftGrid.setVgap(/*20*/45);
 
         // 1st button
         MenuButton selectPlanet1 = new MenuButton("Select Planet 1"); rowCount++;
@@ -107,7 +109,7 @@ public class UI extends Parent {
             if (rowCount > 5) {
                 // Maximum reached
                 if (!topLeftGrid.getChildren().contains(warningMsg)) {
-                    topLeftGrid.add(warningMsg, 1, 7);
+                    topLeftGrid.add(warningMsg, 1, /*7*/6);
                     PauseTransition pause = new PauseTransition(Duration.seconds(3));
                     pause.setOnFinished(event -> {
                         topLeftGrid.getChildren().remove(warningMsg); // Remove the warning message after 3 seconds
@@ -120,12 +122,12 @@ public class UI extends Parent {
 
         topLeftGrid.add(selectPlanet1, 1, 1);
         topLeftGrid.add(selectPlanet2, 1 ,2);
-        topLeftGrid.add(addCustomPlanet, 1, 9);
+        topLeftGrid.add(addCustomPlanet, 1,/*9*/7);
 
         Separator separator1 = new Separator();
         separator1.setScaleX(39);
         separator1.setScaleY(3);
-        separator1.setLayoutY(370);
+        separator1.setLayoutY(/*370*/510);
 
         Separator separator2 = new Separator();
         separator2.setScaleX(3);
@@ -134,15 +136,83 @@ public class UI extends Parent {
         separator2.setPrefHeight(SCREENHEIGHT);
 
         Label textPreset = new Label("Select Preset");
+        textPreset.getStyleClass().add("title");
         textPreset.setLayoutX(20);
-        textPreset.setLayoutY(390);
+        textPreset.setLayoutY(/*390*/545);
+        
+        //IMAGES FOR THE PRESETS
+        
+        Image Sun= new Image("file:sun.png");
+        Image Earth= new Image("file:earth.png");
+        Image Moon= new Image("file:moon.png");
+        Image Mars= new Image("file:mars.png");
+        Image Venus= new Image("file:venus.png");
+        
+        //PRESET #1
+        ImageView SunView= new ImageView(Sun);
+        SunView.setFitHeight(40);
+        SunView.setFitWidth(40);
+
+        ImageView EarthView= new ImageView(Earth);
+        EarthView.setFitHeight(45);
+        EarthView.setFitWidth(45);
+        
+        //PRESET #2
+        ImageView SunView2= new ImageView(Sun);
+        SunView2.setFitHeight(40);
+        SunView2.setFitWidth(40);
+        
+        ImageView EarthView2= new ImageView(Earth);
+        EarthView2.setFitHeight(45);
+        EarthView2.setFitWidth(45); 
+        
+        ImageView MoonView= new ImageView(Moon);
+        MoonView.setFitHeight(40);
+        MoonView.setFitWidth(40);
+        
+       //PRESET #3
+        ImageView SunView3= new ImageView(Sun);
+        SunView3.setFitHeight(40);
+        SunView3.setFitWidth(40);
+        
+        ImageView EarthView3= new ImageView(Earth);
+        EarthView3.setFitHeight(45);
+        EarthView3.setFitWidth(45); 
+        
+        ImageView MarsView= new ImageView(Mars);
+        MarsView.setFitHeight(48);
+        MarsView.setFitWidth(48);
+        
+        //PRESET #4
+        ImageView SunView4= new ImageView(Sun);
+        SunView4.setFitHeight(40);
+        SunView4.setFitWidth(40);
+        
+        ImageView EarthView4= new ImageView(Earth);
+        EarthView4.setFitHeight(45);
+        EarthView4.setFitWidth(45); 
+        
+        ImageView VenusView= new ImageView(Venus);
+        VenusView.setFitHeight(45);
+        VenusView.setFitWidth(45);
+        
 
         Rectangle preset1 = new Rectangle(180, 70);
         preset1.setFill(Color.TRANSPARENT);
         preset1.setStroke(Color.BLACK);
         preset1.setStrokeWidth(0.7);
         preset1.setLayoutX(10);
-        preset1.setLayoutY(420);
+        preset1.setLayoutY(/*420*/600);
+        
+        HBox imagePreset1= new HBox(10,SunView,EarthView);
+        imagePreset1.setAlignment(Pos.CENTER_LEFT);
+        imagePreset1.setPadding(new Insets(10));
+        imagePreset1.setMouseTransparent(true);
+        
+        StackPane finalPreset1= new StackPane(preset1,imagePreset1);
+        finalPreset1.setLayoutX(10);
+        finalPreset1.setLayoutY(/*420*/600);
+        
         preset1.setOnMouseEntered(event -> {
             preset1.getScene().setCursor(Cursor.HAND); // Set cursor to hand
         });
@@ -158,7 +228,17 @@ public class UI extends Parent {
         preset2.setStroke(Color.BLACK);
         preset2.setStrokeWidth(0.7);
         preset2.setLayoutX(10);
-        preset2.setLayoutY(510);
+        preset2.setLayoutY(/*510*/690);
+        
+        HBox imagePreset2= new HBox(10,SunView2,EarthView2,MoonView);
+        imagePreset2.setAlignment(Pos.CENTER_LEFT);
+        imagePreset2.setPadding(new Insets(10));
+        imagePreset2.setMouseTransparent(true);
+        
+        StackPane finalPreset2= new StackPane(preset2,imagePreset2);
+        finalPreset2.setLayoutX(10);
+        finalPreset2.setLayoutY(/*510*/690);
+        
         preset2.setOnMouseEntered(event -> {
             preset2.getScene().setCursor(Cursor.HAND); // Set cursor to hand
         });
@@ -174,7 +254,17 @@ public class UI extends Parent {
         preset3.setStroke(Color.BLACK);
         preset3.setStrokeWidth(0.7);
         preset3.setLayoutX(10);
-        preset3.setLayoutY(600);
+        preset3.setLayoutY(/*600*/780);
+        
+        HBox imagePreset3= new HBox(10,SunView3,EarthView3,MarsView);
+        imagePreset3.setAlignment(Pos.CENTER_LEFT);
+        imagePreset3.setPadding(new Insets(10));
+        imagePreset3.setMouseTransparent(true);
+        
+        StackPane finalPreset3= new StackPane(preset3,imagePreset3);
+        finalPreset3.setLayoutX(10);
+        finalPreset3.setLayoutY(/*600*/780);
+        
         preset3.setOnMouseEntered(event -> {
             preset3.getScene().setCursor(Cursor.HAND); // Set cursor to hand
         });
@@ -184,10 +274,37 @@ public class UI extends Parent {
         preset3.setOnMouseClicked(e-> {
             // Add functionality here
         });
+        
+        Rectangle preset4 = new Rectangle(180, 70);
+        preset4.setFill(Color.TRANSPARENT);
+        preset4.setStroke(Color.BLACK);
+        preset4.setStrokeWidth(0.7);
+        preset4.setLayoutX(10);
+        preset4.setLayoutY(/*600*/870);
+        
+        HBox imagePreset4= new HBox(10,SunView4,EarthView4,VenusView);
+        imagePreset4.setAlignment(Pos.CENTER_LEFT);
+        imagePreset4.setPadding(new Insets(10));
+        imagePreset4.setMouseTransparent(true);
+        
+        StackPane finalPreset4= new StackPane(preset4,imagePreset4);
+        finalPreset4.setLayoutX(10);
+        finalPreset4.setLayoutY(/*600*/870);
+        
+        preset4.setOnMouseEntered(event -> {
+            preset4.getScene().setCursor(Cursor.HAND); // Set cursor to hand
+        });
+        preset4.setOnMouseExited(event -> {
+            preset4.getScene().setCursor(Cursor.DEFAULT); // Return cursor to default
+        });
+        preset4.setOnMouseClicked(e-> {
+            // Add functionality here
+        });
 
+ 
         Pane leftContainer = new Pane();
         leftContainer.getChildren().addAll(topLeftGrid, separator1, separator2,
-                textPreset, preset1, preset2, preset3);
+                textPreset,finalPreset1, finalPreset2, finalPreset3,finalPreset4);
         root.setLeft(leftContainer);
 
         // Right side
@@ -205,6 +322,7 @@ public class UI extends Parent {
 
         Label planetName = new Label();
         planetName.setText("Planet's Parameters");
+        planetName.getStyleClass().add("title");
         Label velocity = new Label();
         velocity.setText("Velocity: 0 m/s");
         
@@ -213,16 +331,15 @@ public class UI extends Parent {
         Label sliderName2= new Label();
         sliderName2.setText("Radius Multiplier");
         
-        VBox MassMultiplier= new VBox(sliderName,massMultiplier);
+        VBox MassMultiplier= new VBox(10,sliderName,massMultiplier);
         
-        VBox RadiusMultiplier= new VBox(sliderName2,radiusMultiplier);
+        VBox RadiusMultiplier= new VBox(10,sliderName2,radiusMultiplier);
         
         VBox topRight = new VBox();
         topRight.setLayoutX(0);  //was 500
-        topRight.setSpacing(35);
+        topRight.setLayoutY(55);
+        topRight.setSpacing(/*35*/50);
         topRight.setPadding(new Insets(25));
-        /*topRight.getChildren().addAll(planetName, velocity,sliderName,
-                massMultiplier, sliderName2,radiusMultiplier);*/
         topRight.getChildren().addAll(planetName, velocity,MassMultiplier,RadiusMultiplier);
         
 
@@ -230,7 +347,7 @@ public class UI extends Parent {
         separator3.setScaleX(33);
         separator3.setScaleY(3);
         separator3.setLayoutX(165);
-        separator3.setLayoutY(370);
+        separator3.setLayoutY(/*370*/510);
 
         Separator separator4 = new Separator();
         separator4.setOrientation(Orientation.VERTICAL);
@@ -244,28 +361,46 @@ public class UI extends Parent {
         CheckBox showVVectors = new CheckBox("Show Velocity Vectors");
         CheckBox showGrid = new CheckBox("Show Grid");
   
-        Slider scale = new Slider();
+        Slider scale = new Slider(0.5, 3.5, 1);
+        scale.setShowTickLabels(true);
+        scale.setMajorTickUnit(0.5);
+        scale.setMinorTickCount(0);
+        scale.setShowTickMarks(true);
+        
+        scale.valueProperty().addListener((obs,oldval,newval)->{
+            System.out.println(newval.doubleValue());
+        });
+        
         Slider time = new Slider();
         Label scaleLabel = new Label("Scale");
         Label timeLabel = new Label("Time");
-
+        
         VBox bottomRight = new VBox();
-        bottomRight.setSpacing(17);
+        bottomRight.setSpacing(/*17*/25);
         bottomRight.setLayoutX(20);
-        bottomRight.setLayoutY(390);
+        bottomRight.setLayoutY(/*390*/550);
         bottomRight.getChildren().addAll(showPath, showGVectors, showVVectors,
-                showGrid, scaleLabel, scale, timeLabel, time);
+                showGrid,scaleLabel, scale, timeLabel, time );
 
         Button start = new Button("Start");
+        start.setOnAction(e->{
+            
+        });
         Button pause = new Button("Stop");
+        pause.setOnAction(e->{
+            
+        });
         Button reset = new Button("Reset");
-
+        reset.setOnAction(e->{
+            
+        });
+        
         start.setLayoutX(20);
-        start.setLayoutY(670);
+        start.setLayoutY(/*670*/920);
         pause.setLayoutX(70);
-        pause.setLayoutY(670);
+        pause.setLayoutY(/*670*/920);
         reset.setLayoutX(120);
-        reset.setLayoutY(670);
+        reset.setLayoutY(/*670*/920);
 
         Pane rightContainer = new Pane();
         rightContainer.getChildren().addAll(topRight, separator3, separator4,
@@ -366,6 +501,7 @@ public class UI extends Parent {
             stage.close();
         });
         Scene scene = new Scene(pane, 400, 200);
+        scene.getStylesheets().add("style.css");
         stage.setTitle("Confirm exit");
         stage.setScene(scene);
         stage.show();

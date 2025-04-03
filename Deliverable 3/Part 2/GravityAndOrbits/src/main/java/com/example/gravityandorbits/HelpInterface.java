@@ -31,7 +31,7 @@ public class HelpInterface {
       String features="FEATURES";
       
       String instructions2= """
-                            Add Planets: Click on 'Add Custom Planet' up to 5 planets / or Select from the presets.
+                            Add Planets: Click on 'Add Custom Planet' up to 5 planets or Select from the presets.
                             Change Parameters: Interact with the slider 'Mass Multiplier/Radius Multiplier' on the right side.
                             Show Grid: Click the checkbox 'Show Grid'.
                             Show Path: Click the checkbox 'Show Path'.
