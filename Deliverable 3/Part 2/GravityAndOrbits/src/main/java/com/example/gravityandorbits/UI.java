@@ -25,6 +25,9 @@ import javafx.util.Duration;
 import java.io.*;
 
 import java.awt.*;
+import java.util.HashMap;
+import java.util.Map;
+
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -34,8 +37,10 @@ public class UI extends Parent {
     public final double SCREENHEIGHT = Toolkit.getDefaultToolkit().getScreenSize().getHeight();
 
     private static final double G = 6.6743e-11;
-    private String selectedPlanet1 = null;
-    private String selectedPlanet2 = null;
+
+    Map<ToggleButton, Pane> planetPaneMap = new HashMap<>();
+    StackPane parameterDisplayPane = new StackPane();
+
     private String selectedPlanetType = null;
     private int rowCount = 0;
     private final Text warningMsg = new Text("Cannot add more than 5 planets.");
@@ -96,6 +101,17 @@ public class UI extends Parent {
         topLeftGrid.setVgap(/*20*/45);
 
         ToggleGroup toggleGroup = new ToggleGroup();
+
+        toggleGroup.selectedToggleProperty().addListener((obs, oldToggle, newToggle) -> {
+            parameterDisplayPane.getChildren().clear();
+            if (newToggle != null) {
+                ToggleButton selectedButton = (ToggleButton) newToggle;
+                Pane selectedPane = planetPaneMap.get(selectedButton);
+                if (selectedPane != null) {
+                    parameterDisplayPane.getChildren().add(selectedPane);
+                }
+            }
+        });
 
         Button addCustomPlanet = new Button("Add Custom Planet");
         addCustomPlanet.setOnAction(e -> {
@@ -301,44 +317,6 @@ public class UI extends Parent {
                 textPreset,finalPreset1, finalPreset2, finalPreset3,finalPreset4);
         root.setLeft(leftContainer);
 
-        // Right side
-
-        Slider massMultiplier = new Slider(0.5, 3.5, 1);
-        Slider radiusMultiplier = new Slider(0.5, 3.5, 1);
-        massMultiplier.setShowTickLabels(true);
-        massMultiplier.setMajorTickUnit(0.5);
-        massMultiplier.setMinorTickCount(0);
-        massMultiplier.setShowTickMarks(true);
-        massMultiplier.setSnapToTicks(true);
-        radiusMultiplier.setShowTickLabels(true);
-        radiusMultiplier.setShowTickMarks(true);
-        radiusMultiplier.setMajorTickUnit(0.5);
-        radiusMultiplier.setMinorTickCount(0);
-        radiusMultiplier.setSnapToTicks(true);
-
-        Label planetName = new Label();
-        planetName.setText("Planet's Parameters");
-        planetName.getStyleClass().add("title");
-        Label velocity = new Label();
-        velocity.setText("Velocity: 0 m/s");
-        
-        Label sliderName=new Label();
-        sliderName.setText("Mass Multiplier");
-        Label sliderName2= new Label();
-        sliderName2.setText("Radius Multiplier");
-        
-        VBox MassMultiplier= new VBox(10,sliderName,massMultiplier);
-        
-        VBox RadiusMultiplier= new VBox(10,sliderName2,radiusMultiplier);
-        
-        VBox topRight = new VBox();
-        topRight.setLayoutX(0);  //was 500
-        topRight.setLayoutY(55);
-        topRight.setSpacing(/*35*/50);
-        topRight.setPadding(new Insets(25));
-        topRight.getChildren().addAll(planetName, velocity,MassMultiplier,RadiusMultiplier);
-        
-
         Separator separator3 = new Separator();
         separator3.setScaleX(33);
         separator3.setScaleY(3);
@@ -399,7 +377,7 @@ public class UI extends Parent {
         reset.setLayoutY(/*670*/920);
 
         Pane rightContainer = new Pane();
-        rightContainer.getChildren().addAll(topRight, separator3, separator4,
+        rightContainer.getChildren().addAll(/*topRight*/parameterDisplayPane, separator3, separator4,
                 bottomRight, start, pause, reset);
         root.setRight(rightContainer);
         
@@ -508,7 +486,7 @@ public class UI extends Parent {
     }
 
     //Set the functionality for adding custom planets
-    public MenuButton addCustomPlanet(int rowCount) {
+    /*public MenuButton addCustomPlanet(int rowCount) {
         MenuButton selectPlanetX = new MenuButton("Select Planet " + (rowCount+1));
         MenuItem sunX = new MenuItem(sun.getText());
         MenuItem earthX = new MenuItem(earth.getText());
@@ -526,7 +504,7 @@ public class UI extends Parent {
         selectPlanetX.setMinSize(160, 10);
 
         return selectPlanetX;
-    }
+    }*/
 
     public void addPlanet(GridPane gridPane, ToggleGroup togglegroup, int row, int column) {
         Stage planetStage = new Stage();
@@ -550,6 +528,41 @@ public class UI extends Parent {
             toggleButton.setToggleGroup(togglegroup);
             toggleButton.setPrefSize(160, 10);
             gridPane.add(toggleButton, row, column);
+
+            VBox parameterPane = new VBox();
+            parameterPane.setPadding(new Insets(10));
+            parameterPane.getChildren().add(new Label(selectedPlanetType + " parameters"));
+
+            Slider massMultiplier = new Slider(0.5, 3.5, 1);
+            Slider radiusMultiplier = new Slider(0.5, 3.5, 1);
+
+            massMultiplier.setShowTickLabels(true);
+            massMultiplier.setMajorTickUnit(0.5);
+            massMultiplier.setMinorTickCount(0);
+            massMultiplier.setShowTickMarks(true);
+            massMultiplier.setSnapToTicks(true);
+
+            radiusMultiplier.setShowTickLabels(true);
+            radiusMultiplier.setShowTickMarks(true);
+            radiusMultiplier.setMajorTickUnit(0.5);
+            radiusMultiplier.setMinorTickCount(0);
+            radiusMultiplier.setSnapToTicks(true);
+
+            Label velocity = new Label("Velocity: 0 m/s");
+            Label sliderName = new Label("Mass Multiplier");
+            Label sliderName2= new Label("Radius Multiplier");
+
+            VBox MassMultiplier= new VBox(10, sliderName, massMultiplier);
+
+            VBox RadiusMultiplier= new VBox(10, sliderName2, radiusMultiplier);
+
+            parameterPane.setLayoutX(0);  //was 500
+            parameterPane.setLayoutY(55);
+            parameterPane.setSpacing(/*35*/50);
+            parameterPane.setPadding(new Insets(25));
+            parameterPane.getChildren().addAll(velocity, MassMultiplier, RadiusMultiplier);
+
+            planetPaneMap.put(toggleButton, parameterPane);
         });
 
         planetType.setMinSize(160, 10);
