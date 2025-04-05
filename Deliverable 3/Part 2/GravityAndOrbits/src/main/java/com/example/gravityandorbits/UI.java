@@ -19,8 +19,10 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import java.io.*;
 
 import java.awt.*;
 import javafx.scene.image.Image;
@@ -47,6 +49,7 @@ public class UI extends Parent {
 
 
     public BorderPane initialize() {
+        Main main = new Main();
         BorderPane root = new BorderPane();
         // MenuBar
         MenuBar menuBar = new MenuBar();
@@ -56,6 +59,19 @@ public class UI extends Parent {
             exitButton();
         });
         Menu file = new Menu("File");
+        MenuItem save = new MenuItem("Save");
+        MenuItem load = new MenuItem("Load");
+        MenuItem delete = new MenuItem("Delete");
+        save.setOnAction(e-> {
+            //Add func.
+        });
+        load.setOnAction(e-> {
+            FileManager.loadAnimation(new Stage());
+        });
+        delete.setOnAction(e-> {
+            FileManager.deleteAnimation(new Stage());
+        });
+        file.getItems().addAll(save, load, delete);
         Menu settings = new Menu("Settings");
         Menu helpUserGuide = new Menu("Help/User Guide");
         MenuItem help = new MenuItem("Help");
