@@ -23,10 +23,12 @@ public class FileManager {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Select a file to delete");
         File selectedFile = fileChooser.showOpenDialog(stage);
-        if (selectedFile.delete()) {
-            System.out.println("File deleted.");
+        if (selectedFile != null) {
+            if (selectedFile.delete()) {
+                System.out.println("File deleted.");
+            }
+            else System.out.println("Failed to delete file.");
         }
-        else System.out.println("Failed to delete file.");
         fileChooser.setInitialDirectory(new File("C://"));
     }
 }
