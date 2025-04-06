@@ -14,7 +14,7 @@ public class Main extends Application {
     public void start(Stage stage) throws IOException {
         UI ui = new UI();
         Scene scene = new Scene(ui.initialize());
-        scene.getStylesheets().add("style.css");
+        scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
         stage.setTitle("Gravity and Orbits");
         stage.setScene(scene);
         stage.setMaximized(true);
