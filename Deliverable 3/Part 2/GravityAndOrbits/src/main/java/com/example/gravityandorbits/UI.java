@@ -87,19 +87,16 @@ public class UI extends Parent {
         });
         file.getItems().addAll(save, load, delete);
         Menu settings = new Menu("Settings");
-        Menu helpUserGuide = new Menu("Help/User Guide");
+        Menu helpMenu = new Menu("Help");
         MenuItem help = new MenuItem("Help");
         help.setOnAction(e -> {
             HelpInterface.LoadHelpInterface();
         });
-        MenuItem userGuide = new MenuItem("User Guide");
-        userGuide.setOnAction(e -> {
-            userGuideButton();
-        });
-        Exit.getItems().addAll(exit);
-        helpUserGuide.getItems().addAll(help, userGuide);
 
-        menuBar.getMenus().addAll(Exit, file, settings, helpUserGuide);
+        Exit.getItems().addAll(exit);
+        helpMenu.getItems().addAll(help);
+
+        menuBar.getMenus().addAll(Exit, file, settings, helpMenu);
         root.setTop(menuBar);
 
         // Left side
@@ -461,33 +458,6 @@ public class UI extends Parent {
         
     }
 
-    // Set the functionality for help button
-    public void helpButton() {
-        Stage stage = new Stage();
-        Label helpText = new Label("Insert help text here");
-        helpText.setScaleX(2);
-        helpText.setScaleY(2);
-        StackPane sp = new StackPane();
-        sp.getChildren().addAll(helpText);
-        Scene scene = new Scene(sp, 500, 400);
-        stage.setScene(scene);
-        stage.setTitle("Help");
-        stage.show();
-    }
-
-    // Set the functionality for user guide button
-    public void userGuideButton() {
-        Stage stage = new Stage();
-        Label userGuideText = new Label("Insert user guide text here");
-        userGuideText.setScaleX(2);
-        userGuideText.setScaleY(2);
-        StackPane sp = new StackPane();
-        sp.getChildren().addAll(userGuideText);
-        Scene scene = new Scene(sp, 500, 400);
-        stage.setScene(scene);
-        stage.setTitle("User Guide");
-        stage.show();
-    }
     // Set the functionality for exit button
     public void exitButton() {
         Stage stage = new Stage();
@@ -586,6 +556,7 @@ public class UI extends Parent {
         planetType.setMinSize(160, 10);
         VBox vbox = new VBox(planetType,validChoice, done);
         Scene scene = new Scene(vbox);
+        scene.getStylesheets().add("style.css");
         planetStage.setScene(scene);
         planetStage.show();
     }
