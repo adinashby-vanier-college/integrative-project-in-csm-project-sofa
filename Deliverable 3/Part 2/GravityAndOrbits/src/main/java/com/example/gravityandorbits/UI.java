@@ -59,12 +59,12 @@ public class UI extends Parent {
     MenuItem mars = new MenuItem("Mars");
     MenuItem venus = new MenuItem("Venus");
     MenuItem neptune = new MenuItem("Neptune");
-
-
-
+     
+    
+    
     public BorderPane initialize() {
         Main main = new Main();
-        BorderPane root = new BorderPane();
+        BorderPane root = new BorderPane();    
         // MenuBar
         MenuBar menuBar = new MenuBar();
         Menu Exit = new Menu("Exit");
@@ -87,19 +87,27 @@ public class UI extends Parent {
         });
         file.getItems().addAll(save, load, delete);
         Menu settings = new Menu("Settings");
-        Menu helpUserGuide = new Menu("Help/User Guide");
+        MenuItem Appearance= new MenuItem("Theme");
+        Appearance.setOnAction(e->{
+            Settings.theme();
+        });
+
+        MenuItem Language= new MenuItem("Language Preference");
+        Language.setOnAction(e->{
+          Settings.language();
+        });
+        
+        Menu helpMenu = new Menu("Help");
         MenuItem help = new MenuItem("Help");
         help.setOnAction(e -> {
             HelpInterface.LoadHelpInterface();
         });
-        MenuItem userGuide = new MenuItem("User Guide");
-        userGuide.setOnAction(e -> {
-            userGuideButton();
-        });
+        
         Exit.getItems().addAll(exit);
-        helpUserGuide.getItems().addAll(help, userGuide);
+        helpMenu.getItems().addAll(help);
+        settings.getItems().addAll(Appearance,Language);
 
-        menuBar.getMenus().addAll(Exit, file, settings, helpUserGuide);
+        menuBar.getMenus().addAll(Exit, file, settings, helpMenu);
         root.setTop(menuBar);
 
         // Left side
@@ -141,6 +149,9 @@ public class UI extends Parent {
             }
 
         });
+        Settings button1=new Settings();
+        button1.registerText(addCustomPlanet);
+        
         topLeftGrid.add(addCustomPlanet, 1,/*9*/7);
 
         Separator separator1 = new Separator();
@@ -156,16 +167,20 @@ public class UI extends Parent {
 
         Label textPreset = new Label("Select Preset");
         textPreset.getStyleClass().add("title");
-        textPreset.setLayoutX(20);
+        textPreset.setLayoutX(15);
         textPreset.setLayoutY(/*390*/545);
         
+        Settings preset= new Settings();
+        preset.registerText(textPreset);
+        
+    
         //IMAGES FOR THE PRESETS
         
-        Image Sun= new Image("file:sun.png");
-        Image Earth= new Image("file:earth.png");
-        Image Moon= new Image("file:moon.png");
-        Image Mars= new Image("file:mars.png");
-        Image Venus= new Image("file:venus.png");
+        Image Sun= new Image("sun.png");
+        Image Earth= new Image("earth.png");
+        Image Moon= new Image("moon.png");
+        Image Mars= new Image("mars.png");
+        Image Venus= new Image("venus.png");
         
         //PRESET #1
         ImageView SunView= new ImageView(Sun);
@@ -343,6 +358,12 @@ public class UI extends Parent {
         CheckBox showGVectors = new CheckBox("Show Gravity Vectors");
         CheckBox showVVectors = new CheckBox("Show Velocity Vectors");
         CheckBox showGrid = new CheckBox("Show Grid");
+        
+        Settings check1= new Settings();
+        check1.registerText(showPath);
+        check1.registerText(showGrid);
+        check1.registerText(showGVectors);
+        check1.registerText(showVVectors);
   
         Slider scale = new Slider(0.5, 3.5, 1);
         scale.setShowTickLabels(true);
@@ -358,12 +379,16 @@ public class UI extends Parent {
         Label scaleLabel = new Label("Scale");
         Label timeLabel = new Label("Time");
         
+        Settings sliders=new Settings();
+        sliders.registerText(scaleLabel);
+        sliders.registerText(timeLabel);
+        
         VBox bottomRight = new VBox();
         bottomRight.setSpacing(/*17*/25);
         bottomRight.setLayoutX(20);
         bottomRight.setLayoutY(/*390*/550);
         bottomRight.getChildren().addAll(showPath, showGVectors, showVVectors,
-                showGrid,scaleLabel, scale, timeLabel, time );
+                showGrid,scaleLabel, scale, timeLabel, time);
 
         Button start = new Button("Start");
         start.setOnAction(e->{
@@ -377,6 +402,11 @@ public class UI extends Parent {
         reset.setOnAction(e->{
             
         });
+        
+        Settings buttons= new Settings();
+        buttons.registerText(start);
+        buttons.registerText(pause);
+        buttons.registerText(reset);
         
         start.setLayoutX(20);
         start.setLayoutY(/*670*/920);
@@ -524,7 +554,7 @@ public class UI extends Parent {
     }
 
     public void addPlanet(GridPane gridPane, ToggleGroup togglegroup, int row, int column) {
-        Stage planetStage = new Stage();
+       Stage planetStage = new Stage();
         Button done = new Button("Done");
         MenuButton planetType = new MenuButton("Select Planet Type");
 
@@ -539,7 +569,7 @@ public class UI extends Parent {
             planetType.getItems().add(item);
         }
         Label validChoice = new Label();
-
+          
         done.setOnAction(e -> {
 
             if (selectedPlanetType == null) {
@@ -549,8 +579,8 @@ public class UI extends Parent {
                 ToggleButton toggleButton = new ToggleButton(selectedPlanetType);
                 toggleButton.setToggleGroup(togglegroup);
                 toggleButton.setPrefSize(160, 10);
-                gridPane.add(toggleButton, row, column);
-
+                gridPane.add(toggleButton, row, column); 
+                
                 VBox parameterPane = new VBox();
                 parameterPane.setPadding(new Insets(10));
                 parameterPane.getChildren().add(new Label(selectedPlanetType + " parameters"));
@@ -565,15 +595,15 @@ public class UI extends Parent {
                 Label kg = new Label("kg");
                 Label radiusLabel = new Label("Radius Multiplier: ");
                 Label m = new Label("m");
-
+                
                 HBox velocityHBox = new HBox(10, velocityTextField, metersPerSecond);
                 HBox massHBox = new HBox(10, massTextField, kg);
                 HBox radiusHBox = new HBox(10, radiusTextField, m);
-
+              
                 VBox velocityVBox = new VBox(velocityLabel, velocityHBox);
                 VBox massVBox = new VBox(massLabel, massHBox);
-                VBox radiusVBox = new VBox(radiusLabel, radiusHBox);
-
+                VBox radiusVBox = new VBox(radiusLabel, radiusHBox);  
+                              
                 parameterPane.setLayoutX(0);  //was 500
                 parameterPane.setLayoutY(55);
                 parameterPane.setSpacing(/*35*/50);
@@ -582,7 +612,7 @@ public class UI extends Parent {
                 planetPaneMap.put(toggleButton, parameterPane);
             }
         });
-
+                
         planetType.setMinSize(160, 10);
         VBox vbox = new VBox(planetType,validChoice, done);
         Scene scene = new Scene(vbox);

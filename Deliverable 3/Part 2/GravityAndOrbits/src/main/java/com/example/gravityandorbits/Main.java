@@ -19,8 +19,12 @@ public class Main extends Application {
         stage.setScene(scene);
         stage.setMaximized(true);
         stage.setMaxWidth(Screen.getPrimary().getBounds().getWidth());
-        stage.setMaxHeight(Screen.getPrimary().getBounds().getHeight());
-        stage.show();
+        stage.setMaxHeight(Screen.getPrimary().getBounds().getHeight());     
+        stage.show(); 
+        
+        //To Change Settings
+        Settings settings= new Settings();
+        settings.registerScene(scene);
     }
 
     public static void main(String[] args) {
