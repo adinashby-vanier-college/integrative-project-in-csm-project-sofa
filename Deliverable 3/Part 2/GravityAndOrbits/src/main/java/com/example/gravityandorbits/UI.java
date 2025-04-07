@@ -87,20 +87,26 @@ public class UI extends Parent {
         });
         file.getItems().addAll(save, load, delete);
         Menu settings = new Menu("Settings");
-        
+        MenuItem Appearance= new MenuItem("Theme");
+        Appearance.setOnAction(e->{
+            Settings.theme();
+        });
 
+        MenuItem Language= new MenuItem("Language Preference");
+        Language.setOnAction(e->{
+          Settings.language();
+        });
+        
         Menu helpMenu = new Menu("Help");
         MenuItem help = new MenuItem("Help");
         help.setOnAction(e -> {
             HelpInterface.LoadHelpInterface();
         });
- 
-        Exit.getItems().addAll(exit);
-        helpMenu.getItems().addAll(help);
 
         Exit.getItems().addAll(exit);
         helpMenu.getItems().addAll(help);
-
+        settings.getItems().addAll(Appearance,Language);
+     
         menuBar.getMenus().addAll(Exit, file, settings, helpMenu);
         root.setTop(menuBar);
 
