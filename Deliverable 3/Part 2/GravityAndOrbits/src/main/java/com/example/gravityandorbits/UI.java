@@ -1,5 +1,6 @@
 package com.example.gravityandorbits;
 
+import javafx.animation.AnimationTimer;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.geometry.*;
@@ -42,14 +43,12 @@ public class UI extends Parent {
     private Canvas canvas = new Canvas(1500, 990);
     private static final double G = 6.6743e-11;
     private List<Planet> planets = new ArrayList<>();
-    TextField velocityTextField = new TextField();
-    TextField massTextField = new TextField();
-    TextField radiusTextField = new TextField();
+
 
     private Map<ToggleButton, Planet> planetObjectMap = new HashMap<>();
     private Map<ToggleButton, Pane> planetPaneMap = new HashMap<>();
     private StackPane parameterDisplayPane = new StackPane();
-
+    private GraphicsContext gc = canvas.getGraphicsContext2D();
     private String selectedPlanetType = null;
     private int rowCount = 0;
     private final Text warningMsg = new Text("Cannot add more than 5 planets.");
@@ -423,7 +422,7 @@ public class UI extends Parent {
 
         // Outer space (center)
 
-        GraphicsContext gc = canvas.getGraphicsContext2D();
+
         gc.setFill(Color.BLACK);
         gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
@@ -436,17 +435,17 @@ public class UI extends Parent {
             double y = event.getY();
 
             Pane selectedPlanetPane = planetPaneMap.get(activeButton);
-            if (!(selectedPlanetPane instanceof VBox vBox)) return;
+            //if (!(selectedPlanetPane instanceof Pane pane)) return;
 
             try {
-                double mass = Double.parseDouble(massTextField.getText());
-                double velocityX = Double.parseDouble(velocityTextField.getText());
-                double velocityY = Double.parseDouble(velocityTextField.getText());
+                double mass = Double.parseDouble(((TextField) selectedPlanetPane.lookup("#massField")).getText());
+                double velocity = Double.parseDouble(((TextField) selectedPlanetPane.lookup("#velocityField")).getText());
+                double radius = Double.parseDouble(((TextField) selectedPlanetPane.lookup("#radiusField")).getText());
 
                 Planet existingPlanet = planetObjectMap.get(selectedButton);
 
                 if (existingPlanet == null) {
-                    Planet newPlanet = new Planet(x, y, mass, velocityX, velocityY);
+                    Planet newPlanet = new Planet(x, y, mass, velocity, radius);
                     planets.add(newPlanet);
                     planetObjectMap.put(selectedButton, newPlanet);
                 } else {
@@ -531,6 +530,10 @@ public class UI extends Parent {
         Button done = new Button("Done");
         MenuButton planetType = new MenuButton("Select Planet Type");
 
+        TextField chooseMassTextField = new TextField("Enter Mass");
+        TextField chooseVelocityTextField = new TextField("Enter velocity");
+        TextField chooseRadiusTextField = new TextField("Enter radius");
+
         String[] planetNames = {"Sun", "Earth", "Moon", "Mars", "Venus", "Neptune"};
 
         for (String planetName : planetNames) {
@@ -558,9 +561,6 @@ public class UI extends Parent {
                 parameterPane.setPadding(new Insets(10));
                 parameterPane.getChildren().add(new Label(selectedPlanetType + " parameters"));
 
-                velocityTextField.setPrefSize(100, 10);
-                massTextField.setPrefSize(100, 10);
-                radiusTextField.setPrefSize(100, 10);
 
                 Label velocityLabel = new Label("Initial Velocity: ");
                 Label metersPerSecond = new Label("m/s");
@@ -568,7 +568,22 @@ public class UI extends Parent {
                 Label kg = new Label("kg");
                 Label radiusLabel = new Label("Radius Multiplier: ");
                 Label m = new Label("m");
-                
+
+                TextField velocityTextField = new TextField();
+                TextField massTextField = new TextField();
+                TextField radiusTextField = new TextField();
+
+                velocityTextField.setPrefSize(100, 10);
+                massTextField.setPrefSize(100, 10);
+                radiusTextField.setPrefSize(100, 10);
+
+                massTextField.setText(chooseMassTextField.getText());
+                massTextField.setId("massField");
+                velocityTextField.setText(chooseVelocityTextField.getText());
+                velocityTextField.setId("velocityField");
+                radiusTextField.setText(chooseRadiusTextField.getText());
+                radiusTextField.setId("radiusField");
+
                 HBox velocityHBox = new HBox(10, velocityTextField, metersPerSecond);
                 HBox massHBox = new HBox(10, massTextField, kg);
                 HBox radiusHBox = new HBox(10, radiusTextField, m);
@@ -587,7 +602,8 @@ public class UI extends Parent {
         });
                 
         planetType.setMinSize(160, 10);
-        VBox vbox = new VBox(planetType,validChoice, done);
+        VBox vbox = new VBox(10, planetType, chooseMassTextField, chooseVelocityTextField, chooseRadiusTextField,validChoice, done);
+        vbox.setPadding(new Insets(10));
         Scene scene = new Scene(vbox);
         scene.getStylesheets().add("style.css");
         planetStage.setScene(scene);
@@ -600,7 +616,59 @@ public class UI extends Parent {
 
         for (Planet planet : planets) {
             gc.setFill(planet.color);
-            gc.fillOval(planet.x - 10, planet.y - 10, 100, 100);
+            gc.fillOval(planet.x - 10, planet.y - 10, planet.radius, planet.radius);
         }
     }
+
+    public void animatePlanets(List<Planet> planets) {
+        for (Planet p1 : planets) {
+            double ax = 0;
+            double ay = 0;
+
+            for (Planet p2 : planets) {
+                if (p1 == p2) {
+                    continue;
+                }
+
+                double dx = p2.x - p1.x;
+                double dy = p2.y - p1.y;
+                double distance = Math.sqrt(dx * dx + dy * dy);
+
+                if (distance < 5) {
+                    distance = 5;
+                }
+
+                double force = G * p1.mass * p2.mass / (distance * distance);
+                double fx = force * dx / distance;
+                double fy = force * dy / distance;
+
+                ax += fx / p1.mass;
+                ay += fy / p1.mass;
+            }
+
+            p1.velocityX += ax;
+            p1.velocityY += ay;
+        }
+        for (Planet p : planets) {
+            p.x += p.velocityX;
+            p.y += p.velocityY;
+        }
+    }
+
+    long lastUpdate = System.nanoTime();
+
+    AnimationTimer timer = new AnimationTimer() {
+        @Override
+        public void handle(long l) {
+            double dt = (l - lastUpdate) / 1e9;
+            lastUpdate = l;
+            animatePlanets(planets);
+            spawnPlanet(gc);
+        }
+    };
+
+    public void startTimer() {
+        timer.start();
+    }
+
 }

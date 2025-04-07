@@ -13,13 +13,14 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         UI ui = new UI();
+        ui.startTimer();
         Scene scene = new Scene(ui.initialize());
         scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
         stage.setTitle("Gravity and Orbits");
         stage.setScene(scene);
         stage.setMaximized(true);
         stage.setMaxWidth(Screen.getPrimary().getBounds().getWidth());
-        stage.setMaxHeight(Screen.getPrimary().getBounds().getHeight());     
+        stage.setMaxHeight(Screen.getPrimary().getBounds().getHeight());
         stage.show(); 
         
         //To Change Settings
