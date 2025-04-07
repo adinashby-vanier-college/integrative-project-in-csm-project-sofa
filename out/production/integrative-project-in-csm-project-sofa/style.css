@@ -31,9 +31,15 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to ed
 .title{
     -fx-font-weight:bold;
     -fx-underline:true;
+    -fx-font-size:13pt;
+}
+
+.sub-body{
+    -fx-font-weight:bold; 
+    -fx-font-size:13pt;
 }
 
 .help{
     -fx-font-family:serif; 
-    -fx-font-size:13pt;  
+    -fx-font-size:12pt;  
 }

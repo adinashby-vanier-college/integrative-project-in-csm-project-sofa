@@ -129,7 +129,7 @@ public class Settings{
       fr_eng.put("Sombre","Dark");
       fr_eng.put("Clair","Light");
       fr_eng.put("Sélectionner un Language","Select a Language");
-      fr_eng.put("English", "Anglais");
+      fr_eng.put("Anglais", "English");
       fr_eng.put("Français","French");
       
       
