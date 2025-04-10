@@ -1,0 +1,56 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Apr 6, 2025, 9:21:05 PM
+    Author     : Angela
+*/
+
+.root{
+    -fx-background-color:#393A3F;
+    -fx-text-fill:white;
+    -fx-font-family:serif; 
+    -fx-font-size:10pt;
+}
+
+.button {
+    -fx-background-color: #555555;
+    -fx-text-fill: white;
+}
+
+.label{
+    -fx-text-fill:white;
+    -fx-font-family:serif; 
+}
+.menu-bar {
+    -fx-background-color: #333;
+    -fx-text-fill:black;
+}
+
+.radio-button.text{
+    -fx-text-fill: white;
+    -fx-font-weight:bold;
+}
+
+.check-box.text {
+    -fx-text-fill: white; 
+}
+
+.title{
+    -fx-font-weight:bold;
+    -fx-underline:true;
+    -fx-font-size:13pt;
+}
+
+.help{
+    -fx-background-color:#393A3F;
+    -fx-text-fill:white;
+    -fx-font-family:serif; 
+    -fx-font-size:12pt;  
+}
+
+.sub-body{
+    -fx-font-weight:bold; 
+    -fx-font-size:13pt;
+}
