@@ -26,11 +26,17 @@ public class Login {
     private ArrayList<String> usernames = new ArrayList<>();
     private ArrayList<String> passwords = new ArrayList<>();
     private int key = 0;
+    private Runnable onLoginSuccess;
 
-    public Parent login() {
+    public void setOnLoginSuccess(Runnable onLoginSuccess) {
+        this.onLoginSuccess = onLoginSuccess;
+    }
+
+
+    public Parent showLoginScreen() {
         //Dummy details for demonstration purposes
         usernames.add("test");
-        passwords.add("123");
+        passwords.add("12345678");
 
         UI ui = new UI();
         VBox vb = new VBox();
@@ -57,10 +63,13 @@ public class Login {
         Button button = new Button("Login");
         button.setScaleX(2); button.setScaleY(2);
         button.setTextFill(Color.BLUE);
-        System.out.println("ArrayList size: " + usernames.size());
             button.setOnAction(e-> {
                 if (verifyLogin(enterUsername.getText(), enterPassword.getText())) {
                     System.out.println("Correct username and password!");
+                    key = 1;
+                    if (onLoginSuccess != null) {
+                        onLoginSuccess.run();
+                    }
                 }
                 else {
                     if (!vb.getChildren().contains(error)) {
@@ -86,22 +95,92 @@ public class Login {
         createAccount.setOnMouseExited(e-> {
             createAccount.getScene().setCursor(Cursor.DEFAULT);
         });
-        createAccount.setOnMouseClicked(e-> {
-            System.out.println("Button clicked.");
-            // Will add functionality later
-        });
 
         vb.getChildren().addAll(welcome, usernameLabel, enterUsername,
                 passwordLabel, enterPassword, button, createAccount);
+
+        createAccount.setOnMouseClicked(e-> {
+            Label create = new Label("Create an account");
+            create.setScaleX(3); create.setScaleY(3);
+            Text usernameLabel1 = new Text("Enter username:");
+            usernameLabel1.setScaleX(1.5); usernameLabel1.setScaleY(1.5);
+            Text passwordLabel1 = new Text("Enter password:");
+            passwordLabel1.setScaleX(1.5); passwordLabel1.setScaleY(1.5);
+            TextField username = new TextField();
+            username.setPromptText("Type username...");
+            PasswordField password = new PasswordField();
+            password.setPromptText("Type password...");
+            username.setScaleX(2); username.setScaleY(2);
+            password.setScaleX(2); password.setScaleY(2);
+            Label msg = new Label();
+            msg.setScaleX(1.5); msg.setScaleY(1.5);
+            msg.setTextFill(Color.RED);
+            username.setMaxWidth(150);
+            password.setMaxWidth(150);
+            Button registerButton = new Button("Register account");
+            registerButton.setScaleX(2); registerButton.setScaleY(2);
+            registerButton.setTextFill(Color.BLACK);
+            Button back = new Button("Back");
+            back.setScaleX(2); back.setScaleY(2);
+            back.setTextFill(Color.BLUE);
+            back.setOnAction(e2-> {
+                vb.getChildren().removeAll(create, back, usernameLabel1, username, passwordLabel1,
+                        password, msg, registerButton);
+                vb.getChildren().addAll(welcome, usernameLabel, enterUsername,
+                        passwordLabel, enterPassword, button, createAccount);
+            });
+
+            vb.getChildren().removeAll(welcome, usernameLabel, enterUsername,
+                    passwordLabel, enterPassword, button, createAccount, error);
+            vb.getChildren().addAll(create, back,usernameLabel1, username, passwordLabel1,
+                    password, registerButton, msg);
+
+            registerButton.setOnAction(e1-> {
+                if (username.getText().isEmpty() || password.getText().isEmpty()) {
+                    msg.setText("Username and password required");
+                    return;
+                }
+
+                if (checkIfUserExists(username.getText())) {
+                    msg.setText("Username already exists.");
+                }
+                else {
+                    usernames.add(username.getText());
+                    passwords.add(password.getText());
+                }
+                vb.getChildren().removeAll(create, back, usernameLabel1, username, passwordLabel1,
+                        password, msg, registerButton);
+                vb.getChildren().addAll(welcome, usernameLabel, enterUsername,
+                        passwordLabel, enterPassword, button, createAccount);
+                vb.getChildren().add(error);
+                error.setText("Registration successful!");
+                error.setFill(Color.GREEN);
+                PauseTransition pause = new PauseTransition(Duration.seconds(3));
+                pause.setOnFinished(event -> {
+                    vb.getChildren().remove(error); // Remove the warning message after 3 seconds
+                    error.setText("Incorrect username or password. Try again.");
+                    error.setFill(Color.RED);
+                });
+                pause.play();
+            });
+
+
+        });
+
+
         StackPane pane = new StackPane(vb);
         vb.setAlignment(Pos.CENTER);
         vb.setLayoutX(ui.SCREENWIDTH / 2);
         vb.setLayoutY(ui.SCREENHEIGHT / 2);
         vb.setSpacing(80);
 
-        return pane;
+        if (!validateLogin()) {
+            return pane;
+        }
+        else return ui.initialize();
 
     }
+
     public boolean validateLogin() {
         if (key == 1) { // Validates if login was successful
             return true;
@@ -109,7 +188,7 @@ public class Login {
         else return false;
     }
 
-    public boolean checkUsername(String username) {
+    private boolean checkUsername(String username) {
         for (int i = 0; i < usernames.size(); i++) {
             if (usernames.get(i).equals(username)) {
                 return true;
@@ -118,7 +197,7 @@ public class Login {
         return false;
     }
 
-    public boolean checkPassword(String password) {
+    private boolean checkPassword(String password) {
         for (int i = 0; i < passwords.size(); i++) {
             if (passwords.get(i).equals(password)) {
                 return true;
@@ -127,11 +206,20 @@ public class Login {
         return false;
     }
 
-    public boolean verifyLogin(String username, String password) {
-        if (checkUsername(username)&& checkPassword(password)) {
+    private boolean verifyLogin(String username, String password) {
+        if (checkUsername(username) && checkPassword(password)) {
             return true;
         }
         else return false;
+    }
+
+    private boolean checkIfUserExists(String username) {
+        for (int i = 0; i < usernames.size(); i++) {
+            if (usernames.get(i).equals(username)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }
