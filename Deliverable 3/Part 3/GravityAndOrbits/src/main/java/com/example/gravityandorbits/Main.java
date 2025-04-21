@@ -11,7 +11,7 @@ import javafx.stage.Screen;
 public class Main extends Application {
 
     private Stage stage;
-
+    
     @Override
     public void start(Stage stage) throws IOException {
         Login login = new Login();
@@ -33,9 +33,12 @@ public class Main extends Application {
         stage.setScene(scene);
         stage.setMaximized(true);
         stage.show();
+        
+        Settings settings= new Settings();
+        settings.registerScene(scene);
     }
 
-    private void showMainApplication() {
+    private void showMainApplication() { 
         UI ui = new UI();
         ui.startTimer();
         stage.close();

@@ -28,12 +28,19 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to ed
     -fx-text-fill:black;
 }
 
-.radio-button.text{
-    -fx-text-fill: white;
-    -fx-font-weight:bold;
+.context-menu,.menu-item{
+    -fx-background-color:#393A3F;
 }
 
-.check-box.text {
+.menu-item:hover{
+    -fx-background-color:#1e1e1e;
+}
+
+.radio-button{
+    -fx-text-fill: white;
+}
+
+.check-box{
     -fx-text-fill: white; 
 }
 
@@ -53,4 +60,12 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to ed
 .sub-body{
     -fx-font-weight:bold; 
     -fx-font-size:13pt;
+}
+
+.slider .axis{
+    -fx-tick-label-fill:white;
+}
+
+Text{
+   -fx-fill:white; 
 }

@@ -1,5 +1,7 @@
 package com.example.gravityandorbits;
 
+import static com.example.gravityandorbits.Settings.applyLanguageToAllLabels;
+import static com.example.gravityandorbits.Settings.applyLanguageToMenuBar;
 import javafx.animation.AnimationTimer;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
@@ -63,8 +65,8 @@ public class UI extends Parent {
     
     
     public BorderPane initialize() {
-        Main main = new Main();
-        BorderPane root = new BorderPane();    
+        Main main = new Main(); 
+        BorderPane root = new BorderPane();  
         // MenuBar
         MenuBar menuBar = new MenuBar();
         Menu Exit = new Menu("Exit");
@@ -109,7 +111,22 @@ public class UI extends Parent {
      
         menuBar.getMenus().addAll(Exit, file, settings, helpMenu);
         root.setTop(menuBar);
+        
+        Settings Menu= new Settings();
+        Menu.registerMenu(Exit);
+        Menu.registerMenu(file);
+        Menu.registerMenu(settings);
+        Menu.registerMenu(helpMenu);
 
+        Settings MenuItem= new Settings();
+        MenuItem.registerMenuItems(exit);
+        MenuItem.registerMenuItems(help);
+        MenuItem.registerMenuItems(Appearance);
+        MenuItem.registerMenuItems(Language);
+        MenuItem.registerMenuItems(save);
+        MenuItem.registerMenuItems(load);
+        MenuItem.registerMenuItems(delete);
+          
         // Left side
         GridPane topLeftGrid = new GridPane();
         topLeftGrid.setAlignment(Pos.TOP_LEFT);
@@ -150,7 +167,7 @@ public class UI extends Parent {
 
         });
         Settings button1=new Settings();
-        button1.registerText(addCustomPlanet);
+        button1.registerLabel(addCustomPlanet);
         
         topLeftGrid.add(addCustomPlanet, 1,/*9*/7);
 
@@ -171,7 +188,7 @@ public class UI extends Parent {
         textPreset.setLayoutY(/*390*/545);
         
         Settings preset= new Settings();
-        preset.registerText(textPreset);
+        preset.registerLabel(textPreset);
         
     
         //IMAGES FOR THE PRESETS
@@ -360,10 +377,10 @@ public class UI extends Parent {
         CheckBox showGrid = new CheckBox("Show Grid");
         
         Settings check1 = new Settings();
-        check1.registerText(showPath);
-        check1.registerText(showGrid);
-        check1.registerText(showGVectors);
-        check1.registerText(showVVectors);
+        check1.registerLabel(showPath);
+        check1.registerLabel(showGrid);
+        check1.registerLabel(showGVectors);
+        check1.registerLabel(showVVectors);
   
         Slider scale = new Slider(0.5, 3.5, 1);
         scale.setShowTickLabels(true);
@@ -380,8 +397,8 @@ public class UI extends Parent {
         Label timeLabel = new Label("Time");
         
         Settings sliders=new Settings();
-        sliders.registerText(scaleLabel);
-        sliders.registerText(timeLabel);
+        sliders.registerLabel(scaleLabel);
+        sliders.registerLabel(timeLabel);
         
         VBox bottomRight = new VBox();
         bottomRight.setSpacing(/*17*/25);
@@ -404,9 +421,9 @@ public class UI extends Parent {
         });
         
         Settings buttons= new Settings();
-        buttons.registerText(start);
-        buttons.registerText(pause);
-        buttons.registerText(reset);
+        buttons.registerLabel(start);
+        buttons.registerLabel(pause);
+        buttons.registerLabel(reset);
         
         start.setLayoutX(20);
         start.setLayoutY(/*670*/920);
@@ -475,7 +492,7 @@ public class UI extends Parent {
 
 
         root.setCenter(canvas);
-
+        
         return root;
         
     }
@@ -484,9 +501,15 @@ public class UI extends Parent {
     public void exitButton() {
         Stage stage = new Stage();
         Pane pane = new Pane();
-        Text text = new Text("Are you sure you want to exit the application?");
+        Label text = new Label("Are you sure you want to exit the application?");
         Button yes = new Button("Yes");
         Button no = new Button("No");
+        
+        Settings exit= new Settings();
+        exit.registerLabel(yes);
+        exit.registerLabel(no);
+        exit.registerLabel(text);
+        
         text.setLayoutX(80);
         text.setLayoutY(40);
         text.setScaleX(1.2);
@@ -513,46 +536,64 @@ public class UI extends Parent {
         stage.setTitle("Confirm exit");
         stage.setScene(scene);
         stage.show();
+        
+        Settings settings= new Settings();
+        settings.registerScene(scene);
     }
 
     public void addPlanet(GridPane gridPane, ToggleGroup togglegroup, int row, int column) {
-       Stage planetStage = new Stage();
+        Stage planetStage = new Stage();
         Button done = new Button("Done");
         MenuButton planetType = new MenuButton("Select Planet Type");
-
+        
         TextField chooseMassTextField = new TextField();
         chooseMassTextField.setPromptText("Enter Mass...");
         TextField chooseVelocityTextField = new TextField();
         chooseVelocityTextField.setPromptText("Enter velocity...");
         TextField chooseRadiusTextField = new TextField();
         chooseRadiusTextField.setPromptText("Enter radius...");
+        
 
         String[] planetNames = {"Sun", "Earth", "Moon", "Mars", "Venus", "Neptune"};
 
         for (String planetName : planetNames) {
             MenuItem item = new MenuItem(planetName);
+            
             item.setOnAction(e -> {
                 selectedPlanetType = planetName;
                 planetType.setText(selectedPlanetType);
             });
             planetType.getItems().add(item);
+            Settings planetSelection= new Settings();
+            planetSelection.registerMenuItems(item);
         }
         Label validChoice = new Label();
+        
+        Settings addplanet= new Settings(); 
+        addplanet.registerLabel(planetType); 
+        addplanet.registerLabel(done);
+        addplanet.registerTextField(chooseMassTextField);
+        addplanet.registerTextField(chooseVelocityTextField);
+        addplanet.registerTextField(chooseRadiusTextField);
           
         done.setOnAction(e -> {
 
             if (selectedPlanetType == null) {
                 validChoice.setText("You must choose a planet type");
+                addplanet.registerLabel(validChoice);
             } else {
                 planetStage.close();
                 ToggleButton toggleButton = new ToggleButton(selectedPlanetType);
                 toggleButton.setToggleGroup(togglegroup);
                 toggleButton.setPrefSize(160, 10);
                 gridPane.add(toggleButton, row, column); 
-                
+
                 VBox parameterPane = new VBox();
                 parameterPane.setPadding(new Insets(10));
                 parameterPane.getChildren().add(new Label(selectedPlanetType + " parameters"));
+           
+                Settings planets= new Settings();
+                planets.registerLabel(toggleButton);
 
 
                 Label velocityLabel = new Label("Initial Velocity: ");
@@ -561,6 +602,14 @@ public class UI extends Parent {
                 Label kg = new Label("kg");
                 Label radiusLabel = new Label("Radius Multiplier: ");
                 Label m = new Label("m");
+                
+                Settings planetParameters= new Settings();
+                planetParameters.registerLabel((Label)parameterPane.getChildren().get(0));
+                planetParameters.registerLabel(massLabel);
+                planetParameters.registerLabel(velocityLabel);
+                planetParameters.registerLabel(radiusLabel);
+                planetParameters.registerLabel(planetType);
+               
 
                 TextField velocityTextField = new TextField();
                 TextField massTextField = new TextField();
@@ -601,6 +650,8 @@ public class UI extends Parent {
         scene.getStylesheets().add("style.css");
         planetStage.setScene(scene);
         planetStage.show();
+        
+        addplanet.registerScene(scene);
     }
 
     public void spawnPlanet(GraphicsContext gc) {

@@ -26,6 +26,7 @@ public class HelpInterface {
     public static Label display= new Label("Display Options");
     public static Label simulationControls=new Label("Simulation Controls");
     public static Label fileManager= new Label("Project Management");
+    public static Label settings= new Label("Theme/Language");
     
     public static void LoadHelpInterface(){
         
@@ -33,6 +34,7 @@ public class HelpInterface {
     display.getStyleClass().add("sub-body");
     simulationControls.getStyleClass().add("sub-body");
     fileManager.getStyleClass().add("sub-body");
+    settings.getStyleClass().add("sub-body");
         
 
       String intro="This application will help you understand the theory of gravitational force between planets. You will be able to see how the force is affected by different factors with vectors and path like down below.";
@@ -68,6 +70,12 @@ public class HelpInterface {
                              Delete Project:
                              Click on File and then click on delete.
                              Choose the file from your File Explorer you want to delete.""";
+      
+      String settingsDescription="""
+                                 Change Theme:
+                                 Adjust theme according to your preferences.
+                                 Change Language:
+                                 Adjust language according to your preferences.""";
      
       Label text1= new Label(intro);
       text1.setWrapText(true);
@@ -92,13 +100,31 @@ public class HelpInterface {
       text5.setWrapText(true);
       text5.setLineSpacing(10);
       
+      Label text6= new Label(settingsDescription);
+      text6.setWrapText(true);
+      text6.setLineSpacing(10);
+      
+      Settings Descriptions= new Settings();
+      Descriptions.registerLabel(planets);
+      Descriptions.registerLabel(display);
+      Descriptions.registerLabel(simulationControls);
+      Descriptions.registerLabel(fileManager);
+      Descriptions.registerLabel(settings);
+      Descriptions.registerLabel(text1);
+      Descriptions.registerLabel(featuresText);
+      Descriptions.registerLabel(text2);
+      Descriptions.registerLabel(text3);
+      Descriptions.registerLabel(text4);
+      Descriptions.registerLabel(text5);
+      Descriptions.registerLabel(text6);
+      
       Image Diagram=new Image("helpcenter.png");
       ImageView DiagramView= new ImageView(Diagram);
       DiagramView.setFitWidth(200);
       DiagramView.setFitHeight(200);
       DiagramView.setPreserveRatio(true);
       
-      VBox intructions= new VBox(10,planets,text2,display,text3,simulationControls,text4,fileManager,text5);
+      VBox intructions= new VBox(10,planets,text2,display,text3,simulationControls,text4,fileManager,text5,settings,text6);
       intructions.setAlignment(Pos.CENTER_LEFT);
       
       VBox content= new VBox(10,text1,DiagramView,featuresText,intructions);
