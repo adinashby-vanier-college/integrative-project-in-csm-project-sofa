@@ -38,6 +38,7 @@ public class Main extends Application {
     private void showMainApplication() {
         UI ui = new UI();
         ui.startTimer();
+        stage.close();
         Scene scene = new Scene(ui.initialize());
         scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
         stage.setTitle("Gravity and Orbits");

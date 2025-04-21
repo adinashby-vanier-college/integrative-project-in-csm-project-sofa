@@ -40,16 +40,17 @@ public class UI extends Parent {
 
     public final double SCREENWIDTH = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
     public final double SCREENHEIGHT = Toolkit.getDefaultToolkit().getScreenSize().getHeight();
-    private Canvas canvas = new Canvas(1500, 990);
+    public Canvas canvas = new Canvas(1500, 990);
     private static final double G = 6.6743e-11;
     private List<Planet> planets = new ArrayList<>();
+    Renderer renderer = new Renderer();
 
 
     private Map<ToggleButton, Planet> planetObjectMap = new HashMap<>();
     private Map<ToggleButton, Pane> planetPaneMap = new HashMap<>();
     private StackPane parameterDisplayPane = new StackPane();
-    private GraphicsContext gc = canvas.getGraphicsContext2D();
-    private String selectedPlanetType = null;
+    public GraphicsContext gc = canvas.getGraphicsContext2D();
+    public String selectedPlanetType = null;
     private int rowCount = 0;
     private final Text warningMsg = new Text("Cannot add more than 5 planets.");
     MenuItem sun = new MenuItem("Sun");
@@ -462,24 +463,13 @@ public class UI extends Parent {
 
         //To show grid
         showGrid.setOnAction(e->{
-        if(showGrid.isSelected()){
-        gc.setStroke(new Color(1.0, 1.0, 1.0, 0.5));
-        gc.setLineWidth(2);
-
-        int gridSize=25;
-            for (int x = 5; x <= canvas.getWidth(); x=x+gridSize) {
-            gc.strokeLine(x, 0, x, canvas.getHeight());
-        }
-
-            for (int y = 5; y <= canvas.getHeight(); y=y+gridSize) {
-            gc.strokeLine(0,y ,canvas.getWidth(),y );
-
-        }
-
-        }else{
-        gc.setFill(Color.BLACK);
-        gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        }
+            if (showGrid.isSelected()) {
+                renderer.showGridLines();
+            }
+            else {
+                gc.setFill(Color.BLACK);
+                gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+            }
         });
 
 

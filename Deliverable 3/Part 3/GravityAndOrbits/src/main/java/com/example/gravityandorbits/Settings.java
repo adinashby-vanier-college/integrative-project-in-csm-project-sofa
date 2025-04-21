@@ -35,8 +35,8 @@ public class Settings{
      }
    
     public static void theme(){
-      Label text= new Label("Select Theme According to Your Preferences");  
-      RadioButton dark= new RadioButton("Dark");  
+      Label text= new Label("Select Theme According to Your Preferences");
+      RadioButton dark= new RadioButton("Dark");
       RadioButton light= new RadioButton("Light");
       ToggleGroup radioGroup= new ToggleGroup();
       dark.setToggleGroup(radioGroup);

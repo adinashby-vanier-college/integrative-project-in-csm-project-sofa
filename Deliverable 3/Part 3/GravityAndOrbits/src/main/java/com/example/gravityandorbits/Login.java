@@ -25,7 +25,7 @@ public class Login {
 
     private ArrayList<String> usernames = new ArrayList<>();
     private ArrayList<String> passwords = new ArrayList<>();
-    private int key = 0;
+    private int key = 0; //The key to determining if login is successful
     private Runnable onLoginSuccess;
 
     public void setOnLoginSuccess(Runnable onLoginSuccess) {
