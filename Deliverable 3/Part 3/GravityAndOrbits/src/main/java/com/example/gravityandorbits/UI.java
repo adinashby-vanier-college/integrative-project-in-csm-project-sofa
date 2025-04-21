@@ -358,7 +358,7 @@ public class UI extends Parent {
         CheckBox showVVectors = new CheckBox("Show Velocity Vectors");
         CheckBox showGrid = new CheckBox("Show Grid");
         
-        Settings check1= new Settings();
+        Settings check1 = new Settings();
         check1.registerText(showPath);
         check1.registerText(showGrid);
         check1.registerText(showGVectors);
@@ -530,9 +530,12 @@ public class UI extends Parent {
         Button done = new Button("Done");
         MenuButton planetType = new MenuButton("Select Planet Type");
 
-        TextField chooseMassTextField = new TextField("Enter Mass");
-        TextField chooseVelocityTextField = new TextField("Enter velocity");
-        TextField chooseRadiusTextField = new TextField("Enter radius");
+        TextField chooseMassTextField = new TextField();
+        chooseMassTextField.setPromptText("Enter Mass...");
+        TextField chooseVelocityTextField = new TextField();
+        chooseVelocityTextField.setPromptText("Enter velocity...");
+        TextField chooseRadiusTextField = new TextField();
+        chooseRadiusTextField.setPromptText("Enter radius...");
 
         String[] planetNames = {"Sun", "Earth", "Moon", "Mars", "Venus", "Neptune"};
 
@@ -549,7 +552,7 @@ public class UI extends Parent {
         done.setOnAction(e -> {
 
             if (selectedPlanetType == null) {
-                validChoice.setText("You must chose a planet type");
+                validChoice.setText("You must choose a planet type");
             } else {
                 planetStage.close();
                 ToggleButton toggleButton = new ToggleButton(selectedPlanetType);
@@ -602,7 +605,7 @@ public class UI extends Parent {
         });
                 
         planetType.setMinSize(160, 10);
-        VBox vbox = new VBox(10, planetType, chooseMassTextField, chooseVelocityTextField, chooseRadiusTextField,validChoice, done);
+        VBox vbox = new VBox(10, planetType, chooseMassTextField, chooseVelocityTextField, chooseRadiusTextField, validChoice, done);
         vbox.setPadding(new Insets(10));
         Scene scene = new Scene(vbox);
         scene.getStylesheets().add("style.css");

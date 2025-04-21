@@ -42,7 +42,7 @@ public class Settings{
       dark.setToggleGroup(radioGroup);
       light.setToggleGroup(radioGroup);
       
-      Settings appearancetext= new Settings();
+      Settings appearancetext = new Settings();
       appearancetext.registerText(text);
       appearancetext.registerText(light);
       appearancetext.registerText(dark);
