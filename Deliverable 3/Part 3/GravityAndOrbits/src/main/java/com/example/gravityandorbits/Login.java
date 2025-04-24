@@ -21,6 +21,8 @@ import javafx.util.Duration;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
+import static org.junit.Assert.assertEquals;
+
 public class Login {
 
     private ArrayList<String> usernames = new ArrayList<>();
@@ -206,7 +208,7 @@ public class Login {
         return false;
     }
 
-    private boolean verifyLogin(String username, String password) {
+    protected boolean verifyLogin(String username, String password) {
         if (checkUsername(username) && checkPassword(password)) {
             return true;
         }

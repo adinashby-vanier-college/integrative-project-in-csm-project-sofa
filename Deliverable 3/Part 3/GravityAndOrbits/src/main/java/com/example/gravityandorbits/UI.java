@@ -569,8 +569,8 @@ public class UI extends Parent {
         }
         Label validChoice = new Label();
         
-        Settings addplanet= new Settings(); 
-        addplanet.registerLabel(planetType); 
+        Settings addplanet = new Settings();
+        addplanet.registerLabel(planetType);
         addplanet.registerLabel(done);
         addplanet.registerTextField(chooseMassTextField);
         addplanet.registerTextField(chooseVelocityTextField);
