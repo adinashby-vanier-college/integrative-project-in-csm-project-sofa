@@ -3,37 +3,35 @@ package com.example.gravityandorbits;
 import javafx.scene.paint.Color;
 
 public class Planet {
-    double x, y;
-    double mass;
-    double radius;
-    double velocity;
-    double velocityX;
-    double velocityY;
-    javafx.scene.paint.Color color = Color.RED;
+    private Vector position;
+    private Vector velocity;
+    private Vector acceleration;
+    private double mass;
+    private double radius;
+    private Color color;
 
-    Planet(double x, double y, double mass, double velocity, double radius) {
-        this.x = x;
-        this.y = y;
+    public Planet(double x, double y, double mass, double radius, double vx, double vy) {
+        this.position = new Vector(x, y);
+        this.velocity = new Vector(vx, vy);
+        this.acceleration = new Vector(0, 0);
         this.mass = mass;
         this.radius = radius;
-        this.velocity = velocity;
-        this.velocityX = velocity * Math.cos(0);
-        this.velocityY = velocity * Math.sin(0);
+        this.color = Color.RED;
     }
 
-    public void setX(double x) {
-        this.x = x;
-    }
+    // Getters
+    public Vector getPosition() { return position; }
+    public Vector getVelocity() { return velocity; }
+    public Vector getAcceleration() { return acceleration; }
+    public double getMass() { return mass; }
+    public double getRadius() { return radius; }
+    public Color getColor() { return color; }
 
-    public void setY(double y) {
-        this.y = y;
-    }
-
-    public double getX() {
-        return x;
-    }
-
-    public double getY() {
-        return y;
-    }
+    // Setters
+    public void setPosition(Vector position) { this.position = position; }
+    public void setVelocity(Vector velocity) { this.velocity = velocity; }
+    public void setAcceleration(Vector acceleration) { this.acceleration = acceleration; }
+    public void setMass(double mass) { this.mass = mass; }
+    public void setRadius(double radius) { this.radius = radius; }
+    public void setColor(Color color) { this.color = color; }
 }
