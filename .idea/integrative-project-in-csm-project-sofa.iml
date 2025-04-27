@@ -37,5 +37,15 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="openjfx.javafx.controls" level="project" />
+    <orderEntry type="library" name="openjfx.javafx.graphics" level="project" />
+    <orderEntry type="library" name="openjfx.javafx.base" level="project" />
+    <orderEntry type="library" name="openjfx.javafx.fxml" level="project" />
+    <orderEntry type="library" scope="TEST" name="junit.jupiter.api" level="project" />
+    <orderEntry type="library" scope="TEST" name="opentest4j" level="project" />
+    <orderEntry type="library" scope="TEST" name="junit.platform.commons" level="project" />
+    <orderEntry type="library" scope="TEST" name="apiguardian.api" level="project" />
+    <orderEntry type="library" scope="TEST" name="junit.jupiter.engine" level="project" />
+    <orderEntry type="library" scope="TEST" name="junit.platform.engine" level="project" />
   </component>
 </module>

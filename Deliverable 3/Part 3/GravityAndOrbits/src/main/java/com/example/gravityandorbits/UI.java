@@ -463,12 +463,12 @@ public class UI extends Parent {
                 Planet existingPlanet = planetObjectMap.get(selectedButton);
 
                 if (existingPlanet == null) {
-                    Planet newPlanet = new Planet(x, y, mass, velocity, radius);
+                    Planet newPlanet = new Planet(x, y, mass, velocity, radius, 10);//added "10" as dummy; remove later
                     planets.add(newPlanet);
                     planetObjectMap.put(selectedButton, newPlanet);
                 } else {
-                    existingPlanet.setX(x);
-                    existingPlanet.setY(y);
+                    //existingPlanet.setX(x);
+                    //existingPlanet.setY(y);
                 }
 
                 spawnPlanet(gc);
@@ -682,20 +682,20 @@ public class UI extends Parent {
                     distance = 5;
                 }
 
-                double force = G * p1.mass * p2.mass / (distance * distance);
+                double force = G * p1.getMass() * p2.getMass() / (distance * distance);
                 double fx = force * dx / distance;
                 double fy = force * dy / distance;
 
-                ax += fx / p1.mass;
-                ay += fy / p1.mass;
+                ax += fx / p1.getMass();
+                ay += fy / p1.getMass();
             }
 
-            p1.velocityX += ax;
-            p1.velocityY += ay;
+            //p1.velocityX += ax;
+            //p1.velocityY += ay;
         }
         for (Planet p : planets) {
-            p.x += p.velocityX;
-            p.y += p.velocityY;
+            //p.x += p.velocityX;
+            //p.y += p.velocityY;
         }
     }
 

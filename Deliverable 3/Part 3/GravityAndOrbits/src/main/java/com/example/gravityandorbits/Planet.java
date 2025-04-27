@@ -7,8 +7,9 @@ public class Planet {
     private Vector velocity;
     private Vector acceleration;
     private double mass;
-    private double radius;
-    private Color color;
+    public double radius;
+    public Color color;
+    public double x,y,z;
 
     public Planet(double x, double y, double mass, double radius, double vx, double vy) {
         this.position = new Vector(x, y);

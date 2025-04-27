@@ -5,8 +5,9 @@ module com.example.gravityandorbits {
     requires javafx.graphics;
     requires junit;
     requires org.junit.jupiter.api;
+    requires org.junit.platform.commons;
 
 
-    opens com.example.gravityandorbits to javafx.fxml;
+    opens com.example.gravityandorbits to javafx.fxml, org.junit.platform.commons;
     exports com.example.gravityandorbits;
 }
