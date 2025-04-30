@@ -24,7 +24,7 @@ public class Main extends Application {
         Login login = new Login();
         login.setOnLoginSuccess(() -> {
             //This will be called when login is successful
-            showMainApplication();
+            showMainApplication();        
         });
 
         Scene scene = new Scene(login.showLoginScreen());
@@ -35,13 +35,13 @@ public class Main extends Application {
         stage.show();
         
         Settings settings= new Settings();
-        settings.registerScene(scene);
+        settings.registerScene(scene);    
     }
 
     private void showMainApplication() { 
         UI ui = new UI();
         ui.startTimer();
-        stage.close();
+        stage.close();           
         Scene scene = new Scene(ui.initialize());
         scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
         stage.setTitle("Gravity and Orbits");
@@ -50,9 +50,10 @@ public class Main extends Application {
         stage.setMaxWidth(Screen.getPrimary().getBounds().getWidth());
         stage.setMaxHeight(Screen.getPrimary().getBounds().getHeight());
         stage.show();
+        
         //To Change Settings
         Settings settings= new Settings();
-        settings.registerScene(scene);
+        settings.registerScene(scene);   
     }
 
     public static void main(String[] args) {

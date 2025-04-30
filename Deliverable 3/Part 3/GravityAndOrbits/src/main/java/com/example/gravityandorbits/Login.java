@@ -21,7 +21,7 @@ import javafx.util.Duration;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-import static org.junit.Assert.assertEquals;
+//import static org.junit.Assert.assertEquals;
 
 public class Login {
 
@@ -85,7 +85,7 @@ public class Login {
                 }
             });
 
-
+        
 
 
         Text createAccount = new Text("Don't have an account? Create one!");
@@ -125,6 +125,17 @@ public class Login {
             Button back = new Button("Back");
             back.setScaleX(2); back.setScaleY(2);
             back.setTextFill(Color.BLUE);
+            
+            Settings accountCreation= new Settings();
+            accountCreation.registerLabel(create);
+            accountCreation.registerLabel(msg);
+            accountCreation.registerLabel(registerButton);
+            accountCreation.registerLabel(back);
+            accountCreation.registerText(usernameLabel1);
+            accountCreation.registerText(passwordLabel1);
+            accountCreation.registerTextField(username);
+            accountCreation.registerTextField(password);
+            
             back.setOnAction(e2-> {
                 vb.getChildren().removeAll(create, back, usernameLabel1, username, passwordLabel1,
                         password, msg, registerButton);
@@ -140,16 +151,20 @@ public class Login {
             registerButton.setOnAction(e1-> {
                 if (username.getText().isEmpty() || password.getText().isEmpty()) {
                     msg.setText("Username and password required");
+                    Settings message = new Settings();
+                    message.registerLabel(msg);
                     return;
                 }
 
                 if (checkIfUserExists(username.getText())) {
                     msg.setText("Username already exists.");
+                    Settings message = new Settings();
+                    message.registerLabel(msg);
                 }
                 else {
                     usernames.add(username.getText());
                     passwords.add(password.getText());
-                }
+                }        
                 vb.getChildren().removeAll(create, back, usernameLabel1, username, passwordLabel1,
                         password, msg, registerButton);
                 vb.getChildren().addAll(welcome, usernameLabel, enterUsername,
@@ -168,8 +183,17 @@ public class Login {
 
 
         });
-
-
+        
+         Settings LoginSettings= new Settings();
+         LoginSettings.registerLabel(welcome);
+         LoginSettings.registerText(usernameLabel);
+         LoginSettings.registerText(passwordLabel);
+         LoginSettings.registerText(error);
+         LoginSettings.registerTextField(enterUsername);
+         LoginSettings.registerTextField(enterPassword);
+         LoginSettings.registerLabel(button);
+         LoginSettings.registerText(createAccount);
+         
         StackPane pane = new StackPane(vb);
         vb.setAlignment(Pos.CENTER);
         vb.setLayoutX(ui.SCREENWIDTH / 2);

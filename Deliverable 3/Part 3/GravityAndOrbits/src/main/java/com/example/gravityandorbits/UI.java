@@ -561,7 +561,9 @@ public class UI extends Parent {
             
             item.setOnAction(e -> {
                 selectedPlanetType = planetName;
-                planetType.setText(selectedPlanetType);
+                planetType.setText(selectedPlanetType);         
+                Settings pt= new Settings();
+                pt.registerLabel(planetType);
             });
             planetType.getItems().add(item);
             Settings planetSelection= new Settings();

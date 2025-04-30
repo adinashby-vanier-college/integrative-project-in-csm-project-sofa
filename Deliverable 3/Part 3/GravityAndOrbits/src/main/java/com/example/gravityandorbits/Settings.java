@@ -23,6 +23,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 /**
@@ -35,7 +36,8 @@ public class Settings{
     private static List<Labeled> registeredLabel=new ArrayList<>();
     private static List<Menu> registeredMenu= new ArrayList<>();
     private static List<MenuItem> registeredMenuItem= new ArrayList<>();
-    private static List<TextField> registeredText= new ArrayList<>();
+    private static List<TextField> registeredTextField= new ArrayList<>();
+    private static List<Text> registeredText= new ArrayList<>();
     
     public void registerScene(Scene scene){
         registeredScenes.add(scene);
@@ -44,6 +46,7 @@ public class Settings{
         applyLanguageToAllLabels();
         applyLanguageToMenuBar();
         applyLanguageToTextField();
+        applyLanguageToText();
     }
 
     public void registerLabel(Labeled label){
@@ -61,8 +64,13 @@ public class Settings{
     }
     
     public void registerTextField(TextField textField){
-        registeredText.add(textField);
+        registeredTextField.add(textField);
         applyLanguageToTextField();
+    }
+    
+    public void registerText(Text text){
+        registeredText.add(text);
+        applyLanguageToText();
     }
      
     public static void theme(){
@@ -115,24 +123,25 @@ public class Settings{
       settings.registerScene(scene);
     }
     
-    public static Map<String,String> eng_fr=new HashMap<>();
-    public static Map<String,String> fr_eng=new HashMap<>();
-    
-    
-    public static void language(){
-      Label text= new Label("Select a Language");  
-      RadioButton english= new RadioButton("English");
-      RadioButton french= new RadioButton("French");
-      ToggleGroup radioGroup= new ToggleGroup();
-      english.setToggleGroup(radioGroup);
-      french.setToggleGroup(radioGroup);
-      
-      Settings languages= new Settings();
-      languages.registerLabel(text);
-      languages.registerLabel(english);
-      languages.registerLabel(french);
-      
-      //TRANSLATION ENGLISH TO FRENCH
+    public static final Map<String,String> eng_fr=new HashMap<>();
+    public static final Map<String,String> fr_eng=new HashMap<>();
+   
+    static{
+      eng_fr.put("Welcome to Gravity and Orbits!", "Bienvenue sur Gravité et Orbites");
+      eng_fr.put("Enter username:","Entrez le nom d'utilisateur:");
+      eng_fr.put("Type username...", "Tapez le nom d'utilisateur");
+      eng_fr.put("Enter password:","Entrez le mot de passe:");
+      eng_fr.put("Type password...","Tapez le mot de passe...");
+      eng_fr.put("Login", "Connexion");
+      eng_fr.put("Incorrect username or password. Try again.", "Nom d'utilisateur ou mot de passe est incorrect. Essayez à nouveau.");
+      eng_fr.put("Don't have an account? Create one!","Pas de compte ? Créez-en un!");
+      eng_fr.put("Create an account","Créer un compte");
+      eng_fr.put("Register account", "S'inscrire");
+      eng_fr.put("Back", "Retour");
+      eng_fr.put("Username and password required","Nom d'utilisateur et mot de passe requis");
+      eng_fr.put("Username already exists.","Le nom d'utilisateur existe déjà.");
+      eng_fr.put("Registration successful!","Inscription réussie!");
+      //MAIN APP
       eng_fr.put("Select Preset","Sélectionner Préréglage");
       eng_fr.put("Time","Temps");
       eng_fr.put("Add Custom Planet", "Ajouter Planètes Perso.");
@@ -157,7 +166,7 @@ public class Settings{
       eng_fr.put("Project Management","Gestion de Projet");
       eng_fr.put("This application will help you understand the theory of gravitational force between planets. You will be able to see how the force is affected by different factors with vectors and path like down below.","Cette application vous aidera à comprendre la théorie de la force gravitationnelle entre les planètes. Vous pourrez voir comment la force est affectée par différents facteurs à l'aide de vecteurs et de trajectoires comme ci-dessous.");
       eng_fr.put("FEATURES","FONCTIONNALITÉS");
-      eng_fr.put("Add Planets (up to 5 planets): \nClick on 'Add Custom Planet' or select from presets options \nChange Parameters: \nInteract with the slider 'Mass Multiplier/Radius Multiplier' on the right side ","Ajouter des planètes (jusqu'à 5 planètes) : \nCliquez sur 'Ajouter une planète personnalisée' ou sélectionnez parmi les options prédéfinies. \nChanger les paramètres : \nInteragissez avec le curseur 'Multiplicateur de masse / Multiplicateur de rayon' à droite.");
+      eng_fr.put("Add Planets (up to 5 planets): \nClick on 'Add Custom Planet' or select from presets options \nChange Parameters: \nInput a new mass/velocity/radius on the right side ","Ajouter des planètes (jusqu'à 5 planètes) : \nCliquez sur 'Ajouter une planète personnalisée' ou sélectionnez parmi les options prédéfinies. \nChanger les paramètres : \nEntrer une nouvelle masse/vitesse/rayon à droite.");
       eng_fr.put("""
                  Show Grid:
                  Enable the checkbox 'Show Grid'.
@@ -255,6 +264,22 @@ public class Settings{
       
       
       //TRANSLATION FRENCH TO ENGLISH
+      //LOGIN
+      fr_eng.put("Bienvenue sur Gravité et Orbites","Welcome to Gravity and Orbits!");
+      fr_eng.put("Entrez le nom d'utilisateur:","Enter username:");
+      fr_eng.put("Tapez le nom d'utilisateur","Type username...");
+      fr_eng.put("Entrez le mot de passe:","Enter password:");
+      fr_eng.put("Tapez le mot de passe...","Type password...");
+      fr_eng.put("Connexion","Login");
+      fr_eng.put("Nom d'utilisateur ou mot de passe est incorrect. Essayez à nouveau.","Incorrect username or password. Try again.");
+      fr_eng.put("Pas de compte ? Créez-en un!","Don't have an account? Create one!");
+      fr_eng.put("Créer un compte","Create an account");
+      fr_eng.put("S'inscrire","Register account");
+      fr_eng.put("Retour","Back");
+      fr_eng.put("Nom d'utilisateur et mot de passe requis","Username and password required");
+      fr_eng.put("Le nom d'utilisateur existe déjà.","Username already exists.");
+      fr_eng.put("Inscription réussie!","Registration successful!");
+      //MAIN APP
       fr_eng.put("Sélectionner Préréglage","Select Preset");
       fr_eng.put("Temps","Time");
       fr_eng.put("Ajouter Planètes Perso.","Add Custom Planet");
@@ -279,7 +304,7 @@ public class Settings{
       fr_eng.put("Gestion de Projet","Project Management");
       fr_eng.put("Cette application vous aidera à comprendre la théorie de la force gravitationnelle entre les planètes. Vous pourrez voir comment la force est affectée par différents facteurs à l'aide de vecteurs et de trajectoires comme ci-dessous.","This application will help you understand the theory of gravitational force between planets. You will be able to see how the force is affected by different factors with vectors and path like down below.");
       fr_eng.put("FONCTIONNALITÉS","FEATURES");
-      fr_eng.put("Ajouter des planètes (jusqu'à 5 planètes) : \nCliquez sur 'Ajouter une planète personnalisée' ou sélectionnez parmi les options prédéfinies. \nChanger les paramètres : \nInteragissez avec le curseur 'Multiplicateur de masse / Multiplicateur de rayon' à droite.","Add Planets (up to 5 planets): \nClick on 'Add Custom Planet' or select from presets options \nChange Parameters: \nInteract with the slider 'Mass Multiplier/Radius Multiplier' on the right side ");
+      fr_eng.put("Ajouter des planètes (jusqu'à 5 planètes) : \nCliquez sur 'Ajouter une planète personnalisée' ou sélectionnez parmi les options prédéfinies. \nChanger les paramètres : \nEntrer une nouvelle masse/vitesse/rayon à droite.","Add Planets (up to 5 planets): \nClick on 'Add Custom Planet' or select from presets options \nChange Parameters: \nInput a new mass/velocity/radius on the right side ");
       fr_eng.put("""
                  Montrer la Grille:
                  Clicker la case 'Montrer la Grille'.
@@ -372,7 +397,21 @@ public class Settings{
       fr_eng.put("Êtes-vous sûr de vouloir quitter l'application?","Are you sure you want to exit the application?");
       fr_eng.put("Oui","Yes");
       fr_eng.put("Non","No");
+    }
+    
+    
+    public static void language(){
+      Label text= new Label("Select a Language");  
+      RadioButton english= new RadioButton("English");
+      RadioButton french= new RadioButton("French");
+      ToggleGroup radioGroup= new ToggleGroup();
+      english.setToggleGroup(radioGroup);
+      french.setToggleGroup(radioGroup);
       
+      Settings languages= new Settings();
+      languages.registerLabel(text);
+      languages.registerLabel(english);
+      languages.registerLabel(french);
       
       String currentLanguage=loadLanguage();
        if("french".equals(currentLanguage)){
@@ -400,10 +439,16 @@ public class Settings{
             menuItems.setText(fr_eng.get(subtitle));
          }
        }
-        for(TextField tf:registeredText){
+        for(TextField tf:registeredTextField){
              String answer=tf.getPromptText();
             if (fr_eng.containsKey(answer)) {
             tf.setPromptText(fr_eng.get(answer));
+        }
+       }
+        for(Text t:registeredText){
+            String sentence=t.getText();
+            if (fr_eng.containsKey(sentence)) {
+            t.setText(fr_eng.get(sentence));
         }
        }
          saveLanguage("english"); 
@@ -428,10 +473,16 @@ public class Settings{
             menuItems.setText(eng_fr.get(subtitle));
          }
        }
-           for(TextField tf:registeredText){
+           for(TextField tf:registeredTextField){
              String answer=tf.getPromptText();
             if (eng_fr.containsKey(answer)) {
             tf.setPromptText(eng_fr.get(answer));
+        }
+       }
+            for(Text t:registeredText){
+            String sentence=t.getText();
+            if (eng_fr.containsKey(sentence)) {
+            t.setText(eng_fr.get(sentence));
         }
        }
           saveLanguage("french");
@@ -448,10 +499,11 @@ public class Settings{
       stage.setScene(scene);
       stage.show();  
       
-      Settings settings= new Settings();
+      Settings settings = new Settings();
       settings.registerScene(scene);
              
     }
+    
     //TO KEEP THE LATEST CLICKED RADIO BUTTON EVEN AFTER CLOSING THE SCENE
     public static void saveTheme(String theme){
         try(FileWriter writer= new FileWriter("theme.txt")){
@@ -503,7 +555,7 @@ public class Settings{
         for (Labeled element : registeredLabel) {
             String text = element.getText();
             if (fr_eng.containsKey(text)) {
-                element.setText(fr_eng.get(text));
+                element.setText(fr_eng.get(text)); 
             }
         }
     } else if ("french".equals(language)) {
@@ -549,17 +601,36 @@ public class Settings{
   public static void applyLanguageToTextField(){
       String language= loadLanguage();
       if ("english".equals(language)) {
-        for (TextField tf:registeredText) {
+        for (TextField tf:registeredTextField) {
             String text = tf.getPromptText();
             if (fr_eng.containsKey(text)) {
                 tf.setPromptText(fr_eng.get(text));
             }
         }
     } else if ("french".equals(language)) {
-        for (TextField tf:registeredText) {
+        for (TextField tf:registeredTextField) {
             String text = tf.getPromptText();
             if (eng_fr.containsKey(text)) {
                 tf.setPromptText(eng_fr.get(text));
+            }
+        }
+    }
+      
+  }
+  public static void applyLanguageToText(){
+      String language= loadLanguage();
+      if ("english".equals(language)) {
+        for (Text t:registeredText) {
+            String text = t.getText();
+            if (fr_eng.containsKey(text)) {
+                t.setText(fr_eng.get(text));
+            }
+        }
+    } else if ("french".equals(language)) {
+        for (Text t:registeredText) {
+            String text = t.getText();
+            if (eng_fr.containsKey(text)) {
+                t.setText(eng_fr.get(text));
             }
         }
     }

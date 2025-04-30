@@ -41,7 +41,7 @@ public class HelpInterface {
       
       String features="FEATURES";
       
-      String planetsDescription="Add Planets (up to 5 planets): \nClick on 'Add Custom Planet' or select from presets options \nChange Parameters: \nInteract with the slider 'Mass Multiplier/Radius Multiplier' on the right side ";
+      String planetsDescription="Add Planets (up to 5 planets): \nClick on 'Add Custom Planet' or select from presets options \nChange Parameters: \nInput a new mass/velocity/radius on the right side ";
       
       String displayDescription= """
                                  Show Grid:
