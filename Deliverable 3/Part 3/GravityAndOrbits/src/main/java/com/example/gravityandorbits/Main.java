@@ -6,11 +6,15 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import javafx.stage.Screen;
 
 public class Main extends Application {
 
     private Stage stage;
+    private List<Planet> planets = new ArrayList<>();
     
     @Override
     public void start(Stage stage) throws IOException {
