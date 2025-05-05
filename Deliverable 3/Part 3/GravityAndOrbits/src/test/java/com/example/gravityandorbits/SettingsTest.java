@@ -14,6 +14,13 @@ import org.junit.jupiter.api.*;
  * @author Angela
  */
 public class SettingsTest {
+
+    /* Add these VM options for running tests:
+
+    --add-opens org.junit.platform.commons/org.junit.platform.commons.util=ALL-UNNAMED
+    --add-opens org.junit.platform.commons/org.junit.platform.commons.logging=ALL-UNNAMED
+
+     */
     @Test
      public void saveThemeTest() throws IOException{
         String expected="light";
