@@ -9,9 +9,27 @@ public class Renderer {
     private static final Color BACKGROUND_COLOR = Color.BLACK;
     private static final Color GRID_COLOR       = new Color(1,1,1,0.3);
     private static final Color ACCEL_COLOR      = Color.LIGHTGREEN;
+    private static final Color VEL_COLOR      = Color.LIGHTBLUE;
     private static final int   GRID_SPACING     = 25;
-    private static final double ACCEL_SCALE     = 0.001;
+    private static final double ACCEL_SCALE     = 5;
+    private static final double VEL_SCALE     = 3;
 
+
+    private boolean drawOrbits = true;
+    private boolean drawVelocityVectors = false;
+    private boolean drawAccelerationVectors = false;
+
+    public void setDrawOrbits(boolean value) {
+        drawOrbits = value;
+    }
+
+    public void setDrawVelocityVectors(boolean value) {
+        drawVelocityVectors = value;
+    }
+
+    public void setDrawAccelerationVectors(boolean value) {
+        drawAccelerationVectors = value;
+    }
     /**
      * Renders one frame:
      *  1) clear to black
@@ -54,11 +72,22 @@ public class Renderer {
             gc.setFill(p.getColor());
             gc.fillOval(x - r, y - r, r * 2, r * 2);
 
+            // Velocity vector
+            if(drawVelocityVectors){
+                Vector v = p.getVelocity().multiply(VEL_SCALE);
+                gc.setStroke(VEL_COLOR);
+                gc.setLineWidth(3);
+                gc.strokeLine(x, y, x + v.getX(), y + v.getY());
+            }
+
             // Acceleration vector
-            Vector a = p.getAcceleration().multiply(ACCEL_SCALE);
-            gc.setStroke(ACCEL_COLOR);
-            gc.setLineWidth(1);
-            gc.strokeLine(x, y, x + a.getX(), y + a.getY());
+            if(drawAccelerationVectors){
+                Vector a = p.getAcceleration().multiply(ACCEL_SCALE);
+                gc.setStroke(ACCEL_COLOR);
+                gc.setLineWidth(3);
+                gc.strokeLine(x, y, x + a.getX(), y + a.getY());
+            }
+
         }
     }
 }

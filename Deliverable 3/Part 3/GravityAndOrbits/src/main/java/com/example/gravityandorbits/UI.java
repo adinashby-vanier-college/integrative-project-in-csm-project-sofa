@@ -127,10 +127,10 @@ public class UI extends Parent {
         MenuItem.registerMenuItems(load);
         MenuItem.registerMenuItems(delete);
 
-        planets.add(new Planet(400, 300, 333000, 30, 0, 0));
+        planets.add(new Planet("Sun", 400, 300, 333000, 30, 0, 0));
 
         // Test Planet #2: like an “earth” orbiting to the right
-        planets.add(new Planet(500, 300, 1, 10, 0, 57.72));
+        planets.add(new Planet("Earth", 500, 300, 1, 10, 0, 57.72));
 
 
         // Left side
@@ -278,6 +278,10 @@ public class UI extends Parent {
         });
         preset1.setOnMouseClicked(e-> {
             // Add functionality here
+            planets = new ArrayList<>();
+            planets.add(new Planet("Sun", 750, 495, 333000, 100, 0, 0));
+
+            planets.add(new Planet("Earth", 1000, 495, 1, 40, 0, 36.5));
         });
 
         Rectangle preset2 = new Rectangle(180, 70);
@@ -304,6 +308,12 @@ public class UI extends Parent {
         });
         preset2.setOnMouseClicked(e-> {
             // Add functionality here
+            planets = new ArrayList<>();
+            // Place Sun at center
+            planets.add(new Planet("Sun",   750, 495, 1000, 20,     0,       0));
+            planets.add(new Planet("Earth", 950, 495,    1, 10,     0,   -2.236));
+            planets.add(new Planet("Moon",  970, 495, 0.01,  5,  0.224,   -2.236));
+
         });
 
         Rectangle preset3 = new Rectangle(180, 70);
@@ -483,7 +493,7 @@ public class UI extends Parent {
                 Planet existingPlanet = planetObjectMap.get(selectedButton);
 
                 if (existingPlanet == null) {
-                    Planet newPlanet = new Planet(x, y, mass, velocity, radius, 10);//added "10" as dummy; remove later
+                    Planet newPlanet = new Planet("Planet", 700, 300, 500, 30,300,300);//added "10" as dummy; remove later
                     planets.add(newPlanet);
                     planetObjectMap.put(selectedButton, newPlanet);
                 } else {
@@ -497,6 +507,26 @@ public class UI extends Parent {
             }
         });
 
+        //To show vectors
+        showGVectors.setOnAction(e->{
+            if (showGVectors.isSelected()) {
+                renderer.setDrawAccelerationVectors(true);
+            }
+            else {
+                renderer.setDrawAccelerationVectors(false);
+            }
+        });
+
+        showVVectors.setOnAction(e->{
+            if (showVVectors.isSelected()) {
+                renderer.setDrawVelocityVectors(true);
+            }
+            else {
+                renderer.setDrawVelocityVectors(false);
+            }
+        });
+
+
         //To show grid
         showGrid.setOnAction(e->{
             if (showGrid.isSelected()) {
@@ -506,6 +536,8 @@ public class UI extends Parent {
                 setShowGrid(false);
             }
         });
+
+
 
 
 
