@@ -5,7 +5,7 @@ import java.util.List;
 public class Calculation {
 
     //universal gravitational constant
-    private static final double G = 6.67430e-11;
+    private static final double G = 1;
 
     //compute net force on each planet, then update their respective acceleration
     public static void computeAccelerations(List<Planet> planets) {

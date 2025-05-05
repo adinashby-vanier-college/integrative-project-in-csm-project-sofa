@@ -43,7 +43,6 @@ public class UI extends Parent {
     public final double SCREENWIDTH = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
     public final double SCREENHEIGHT = Toolkit.getDefaultToolkit().getScreenSize().getHeight();
     public Canvas canvas = new Canvas(1500, 990);
-    private static final double G = 6.6743e-11;
     private List<Planet> planets = new ArrayList<>();
     Renderer renderer = new Renderer();
 
@@ -55,6 +54,7 @@ public class UI extends Parent {
     public String selectedPlanetType = null;
     private int rowCount = 0;
     private final Text warningMsg = new Text("Cannot add more than 5 planets.");
+    private boolean showGrid = false;
     MenuItem sun = new MenuItem("Sun");
     MenuItem earth = new MenuItem("Earth");
     MenuItem moon = new MenuItem("Moon");
@@ -126,7 +126,13 @@ public class UI extends Parent {
         MenuItem.registerMenuItems(save);
         MenuItem.registerMenuItems(load);
         MenuItem.registerMenuItems(delete);
-          
+
+        planets.add(new Planet(400, 300, 333000, 30, 0, 0));
+
+        // Test Planet #2: like an “earth” orbiting to the right
+        planets.add(new Planet(500, 300, 1, 10, 0, 57.72));
+
+
         // Left side
         GridPane topLeftGrid = new GridPane();
         topLeftGrid.setAlignment(Pos.TOP_LEFT);
@@ -471,7 +477,6 @@ public class UI extends Parent {
                     //existingPlanet.setY(y);
                 }
 
-                spawnPlanet(gc);
 
             } catch (NumberFormatException e) {
                 System.out.println("Invalid input in parameters.");
@@ -481,11 +486,10 @@ public class UI extends Parent {
         //To show grid
         showGrid.setOnAction(e->{
             if (showGrid.isSelected()) {
-                renderer.showGridLines();
+                setShowGrid(true);
             }
             else {
-                gc.setFill(Color.BLACK);
-                gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+                setShowGrid(false);
             }
         });
 
@@ -656,64 +660,25 @@ public class UI extends Parent {
         addplanet.registerScene(scene);
     }
 
-    public void spawnPlanet(GraphicsContext gc) {
-        gc.setFill(Color.BLACK);
-        gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-
-        for (Planet planet : planets) {
-            gc.setFill(planet.color);
-            gc.fillOval(planet.x - 10, planet.y - 10, planet.radius, planet.radius);
-        }
+    /** Toggle grid on/off */
+    public void setShowGrid(boolean show) {
+        this.showGrid = show;
     }
 
-    public void animatePlanets(List<Planet> planets) {
-        for (Planet p1 : planets) {
-            double ax = 0;
-            double ay = 0;
+    public void startAnimation() {
+        AnimationTimer timer = new AnimationTimer() {
+            private long last = 0;
+            @Override
+            public void handle(long now) {
+                if (last == 0) { last = now; return; }
+                double dt = (now - last) / 1e9;
+                last = now;
 
-            for (Planet p2 : planets) {
-                if (p1 == p2) {
-                    continue;
-                }
-
-                double dx = p2.x - p1.x;
-                double dy = p2.y - p1.y;
-                double distance = Math.sqrt(dx * dx + dy * dy);
-
-                if (distance < 5) {
-                    distance = 5;
-                }
-
-                double force = G * p1.getMass() * p2.getMass() / (distance * distance);
-                double fx = force * dx / distance;
-                double fy = force * dy / distance;
-
-                ax += fx / p1.getMass();
-                ay += fy / p1.getMass();
+                Calculation.updateAll(planets, dt);
+                renderer.renderFrame(gc, planets, showGrid,
+                        canvas.getWidth(), canvas.getHeight());
             }
-
-            //p1.velocityX += ax;
-            //p1.velocityY += ay;
-        }
-        for (Planet p : planets) {
-            //p.x += p.velocityX;
-            //p.y += p.velocityY;
-        }
-    }
-
-    long lastUpdate = System.nanoTime();
-
-    AnimationTimer timer = new AnimationTimer() {
-        @Override
-        public void handle(long l) {
-            double dt = (l - lastUpdate) / 1e9;
-            lastUpdate = l;
-            animatePlanets(planets);
-            spawnPlanet(gc);
-        }
-    };
-
-    public void startTimer() {
+        };
         timer.start();
     }
 
