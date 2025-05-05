@@ -55,6 +55,7 @@ public class UI extends Parent {
     private int rowCount = 0;
     private final Text warningMsg = new Text("Cannot add more than 5 planets.");
     private boolean showGrid = false;
+    private double timeScale = 1.0;
     MenuItem sun = new MenuItem("Sun");
     MenuItem earth = new MenuItem("Earth");
     MenuItem moon = new MenuItem("Moon");
@@ -407,13 +408,21 @@ public class UI extends Parent {
         scale.valueProperty().addListener((obs,oldval,newval)->{
             System.out.println(newval.doubleValue());
         });
-        
-        Slider time = new Slider();
-        Label scaleLabel = new Label("Scale");
+
         Label timeLabel = new Label("Time");
+        Slider time = new Slider(0.25, 5.0, 1.0);
+        time.setBlockIncrement(0.5);
+        time.setMajorTickUnit(0.5);
+        time.setMinorTickCount(0);
+        time.setSnapToTicks(true);
+        time.setShowTickMarks(true);
+        time.setShowTickLabels(true);
+
+        time.valueProperty().addListener((obs, oldVal, newVal) -> {
+            timeScale = newVal.doubleValue();
+        });
         
         Settings sliders=new Settings();
-        sliders.registerLabel(scaleLabel);
         sliders.registerLabel(timeLabel);
         
         VBox bottomRight = new VBox();
@@ -421,7 +430,7 @@ public class UI extends Parent {
         bottomRight.setLayoutX(20);
         bottomRight.setLayoutY(/*390*/550);
         bottomRight.getChildren().addAll(showPath, showGVectors, showVVectors,
-                showGrid,scaleLabel, scale, timeLabel, time);
+                showGrid, timeLabel, time);
 
         Button start = new Button("Start");
         start.setOnAction(e->{
@@ -720,7 +729,7 @@ public class UI extends Parent {
                 double dt = (now - last) / 1e9;
                 last = now;
 
-                Calculation.updateAll(planets, dt);
+                Calculation.updateAll(planets, dt*timeScale);
                 renderer.renderFrame(gc, planets, showGrid,
                         canvas.getWidth(), canvas.getHeight());
             }

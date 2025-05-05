@@ -11,8 +11,8 @@ public class Renderer {
     private static final Color ACCEL_COLOR      = Color.LIGHTGREEN;
     private static final Color VEL_COLOR      = Color.LIGHTBLUE;
     private static final int   GRID_SPACING     = 25;
-    private static final double ACCEL_SCALE     = 5;
-    private static final double VEL_SCALE     = 3;
+    private static final double ACCEL_SCALE     = 10;
+    private static final double VEL_SCALE     = 2;
 
 
     private boolean drawOrbits = true;
