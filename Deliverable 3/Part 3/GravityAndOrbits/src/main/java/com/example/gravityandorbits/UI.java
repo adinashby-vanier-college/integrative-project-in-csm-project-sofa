@@ -423,6 +423,20 @@ public class UI extends Parent {
         });
         Button reset = new Button("Reset");
         reset.setOnAction(e->{
+          topLeftGrid.getChildren().removeAll(toggleGroup.getToggles());
+          rowCount=0;
+          planets.clear();
+          gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+          gc.setFill(Color.BLACK);
+          gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+          
+          Toggle selectedToggle=toggleGroup.getSelectedToggle();
+          if(selectedToggle instanceof ToggleButton toggleButton){
+              Pane parameterPane=planetPaneMap.get(toggleButton);
+              if(parameterPane!=null&&parameterPane.getParent() instanceof Pane parentPane){
+                  parentPane.getChildren().remove(parameterPane);
+              }
+          }
             
         });
         

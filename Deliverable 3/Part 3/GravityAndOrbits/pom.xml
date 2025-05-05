@@ -31,12 +31,12 @@
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
+        <!--<dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
             <version>${junit.version}</version>
             <scope>test</scope>
-        </dependency>
+        </dependency>-->
         <!-- TestFX for JavaFX UI Testing -->
         <dependency>
             <groupId>org.testfx</groupId>
@@ -52,7 +52,7 @@
         </dependency>
 
         <!-- JUnit 5 (needed for testing) -->
-        <dependency>
+        <!--<dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
             <version>5.8.2</version>
@@ -69,7 +69,7 @@
             <artifactId>junit-platform-launcher</artifactId>
             <version>1.9.2</version>
             <scope>test</scope>
-        </dependency>
+        </dependency>-->
     </dependencies>
 
     <build>
@@ -103,6 +103,11 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>3.0.0-M9</version>
             </plugin>
         </plugins>
     </build>
