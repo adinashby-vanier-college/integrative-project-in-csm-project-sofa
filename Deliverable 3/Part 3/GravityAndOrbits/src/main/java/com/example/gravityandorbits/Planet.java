@@ -7,11 +7,12 @@ public class Planet {
     private Vector velocity;
     private Vector acceleration;
     private double mass;
-    public double radius;
-    public Color color;
-    public double x,y,z;
+    private double radius;
+    private Color color;
+    private String planetName;
 
-    public Planet(double x, double y, double mass, double radius, double vx, double vy) {
+    public Planet(String name, double x, double y, double mass, double radius, double vx, double vy) {
+        this.planetName = name;
         this.position = new Vector(x, y);
         this.velocity = new Vector(vx, vy);
         this.acceleration = new Vector(0, 0);
