@@ -33,12 +33,12 @@ import javafx.stage.Stage;
 public class Settings{
        
     private static List<Scene> registeredScenes= new ArrayList<>();
-    private static List<Labeled> registeredLabel=new ArrayList<>();
+    public static  List<Labeled> registeredLabel=new ArrayList<>();
     private static List<Menu> registeredMenu= new ArrayList<>();
     private static List<MenuItem> registeredMenuItem= new ArrayList<>();
     private static List<TextField> registeredTextField= new ArrayList<>();
     private static List<Text> registeredText= new ArrayList<>();
-    
+   
     public void registerScene(Scene scene){
         registeredScenes.add(scene);
         //TO HAVE EVERY SCENE ON THE SAME THEME/LANGUAGE EVEN THOUGH NOT OPENED
@@ -53,7 +53,7 @@ public class Settings{
          registeredLabel.add(label);
           applyLanguageToAllLabels();
      }
-    
+     
     public void registerMenu(Menu menu){
         registeredMenu.add(menu); 
     }
@@ -636,5 +636,5 @@ public class Settings{
     }
       
   }
-    
+
 }

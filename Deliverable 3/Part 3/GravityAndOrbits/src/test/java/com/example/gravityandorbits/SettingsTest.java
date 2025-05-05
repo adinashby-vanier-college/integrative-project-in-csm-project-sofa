@@ -6,8 +6,6 @@ package com.example.gravityandorbits;
 
 import java.io.*;
 import java.io.IOException;
-import javafx.application.Platform;
-import javafx.scene.control.Label;
 import javafx.scene.control.Labeled;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.*;
@@ -72,5 +70,30 @@ public class SettingsTest {
         String actual= Settings.loadLanguage();    
         assertEquals(expected,actual);
     } 
-  
+    
+    @BeforeEach
+    public void setup(){
+    Settings.registeredLabel.clear();    
+    Settings.eng_fr.clear();
+    Settings.fr_eng.clear();
+      
+    Settings.eng_fr.put("Welcome","Bienvenue");
+    Settings.fr_eng.put("Bienvenue","Welcome");
+   
+ }
+     
+    @Test
+    public void applyLanguageToAllLabelsTest()throws IOException{
+       String language="english" ;
+       try(FileWriter fw= new FileWriter("language.txt")){
+            fw.write(language);
+        }
+       Settings.loadLanguage();
+       Settings.applyLanguageToAllLabels();
+
+       for(Labeled label:Settings.registeredLabel){
+           assertEquals("Welcome",label.getText());
+       }
+    
+}
 }
