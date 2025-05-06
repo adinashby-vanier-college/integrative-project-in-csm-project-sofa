@@ -9,13 +9,13 @@ public class Renderer {
     private static final Color BACKGROUND_COLOR = Color.BLACK;
     private static final Color GRID_COLOR       = new Color(1,1,1,0.3);
     private static final Color ACCEL_COLOR      = Color.RED;
-    private static final Color VEL_COLOR      = Color.LIGHTBLUE;
+    private static final Color VEL_COLOR      = Color.DARKBLUE;
     private static final int   GRID_SPACING     = 25;
     private static final double ACCEL_SCALE     = 2;
-    public static final double VEL_SCALE     = 2;
+    public static final double VEL_SCALE     = 1.5;
 
 
-    private boolean drawOrbits = true;
+    private boolean drawOrbits = false;
     private boolean drawVelocityVectors = false;
     private boolean drawAccelerationVectors = false;
 
@@ -47,7 +47,7 @@ public class Renderer {
         drawPlanets(gc, planets, selectedPlanet);
     }
 
-    private void clearCanvas(GraphicsContext gc, double w, double h) {
+    public void clearCanvas(GraphicsContext gc, double w, double h) {
         gc.setFill(BACKGROUND_COLOR);
         gc.fillRect(0, 0, w, h);
     }
@@ -92,6 +92,20 @@ public class Renderer {
                 gc.strokeLine(x, y, x + a.getX(), y + a.getY());
             }
 
+            //orbit path
+            if (drawOrbits) {
+                p.updateOrbitPath();
+                gc.setStroke(Color.GRAY);
+                gc.setLineWidth(1);
+
+                List<Vector> path = p.getOrbitPath();
+                for (int i = 1; i < path.size(); i++) {
+                    Vector p1 = path.get(i - 1);
+                    Vector p2 = path.get(i);
+                    gc.strokeLine(p1.getX(), p1.getY(), p2.getX(), p2.getY());
+                }
+
+            }
             // Highlight selected planet
             if (p == selectedPlanet) {
                 gc.setStroke(Color.YELLOW);

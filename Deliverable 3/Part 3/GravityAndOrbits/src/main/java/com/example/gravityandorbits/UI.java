@@ -50,17 +50,17 @@ public class UI extends Parent {
 
     private Map<ToggleButton, Planet> planetObjectMap = new HashMap<>();
     private Map<ToggleButton, Pane> planetPaneMap = new HashMap<>();
-    private StackPane parameterDisplayPane = new StackPane();
+    private VBox parameterDisplayPane = new VBox();
     public GraphicsContext gc = canvas.getGraphicsContext2D();
-    public String selectedPlanetType = null;
     public Planet selectedPlanet = null;
     private boolean awaitingVelocityClick = false;
-    private int rowCount = 0;
+    private boolean isSettingPosition = false;
     private final Text warningMsg = new Text("Cannot add more than 5 planets.");
     private boolean showGridState = false;
+    private boolean showOrbitPaths = false;
     private double timeScale = 1.0;
     private long last = 0;
-    private boolean velocitySetMode = false;
+    private VBox planetsButtonBox;
     private Timeline longPressTimer;
     AnimationTimer timer;
     
@@ -108,55 +108,28 @@ public class UI extends Parent {
         MenuItem.registerMenuItems(Appearance);
         MenuItem.registerMenuItems(Language);
 
-        planets.add(new Planet("Sun", 400, 300, 333000, 30, 0, 0));
-
-        // Test Planet #2: like an “earth” orbiting to the right
-        planets.add(new Planet("Earth", 500, 300, 1, 10, 0, 57.72));
-
 
         // Left side
-        GridPane topLeftGrid = new GridPane();
-        topLeftGrid.setAlignment(Pos.TOP_LEFT);
-        topLeftGrid.setGridLinesVisible(false);
-        topLeftGrid.setHgap(20);
-        topLeftGrid.setVgap(/*20*/45);
+        VBox topLeftBox = new VBox(15);
+        topLeftBox.setAlignment(Pos.CENTER);
 
-        ToggleGroup toggleGroup = new ToggleGroup();
+        planetsButtonBox = new VBox(15);
+        planetsButtonBox.setAlignment(Pos.CENTER);
+        planetsButtonBox.setSpacing(15);
+        planetsButtonBox.setPrefHeight(400);
+        topLeftBox.getChildren().add(planetsButtonBox);
 
-        toggleGroup.selectedToggleProperty().addListener((obs, oldToggle, newToggle) -> {
-            parameterDisplayPane.getChildren().clear();
-            if (newToggle != null) {
-                ToggleButton selectedButton = (ToggleButton) newToggle;
-                Pane selectedPane = planetPaneMap.get(selectedButton);
-                if (selectedPane != null) {
-                    parameterDisplayPane.getChildren().add(selectedPane);
-                }
-            }
-        });
-
+        // Add the Button to the VBox
         Button addCustomPlanet = new Button("Add Custom Planet");
-        addCustomPlanet.setOnAction(e -> {
-            if (rowCount < 5) {
-                addPlanet(topLeftGrid, toggleGroup, 1,rowCount + 1);
-            }
-            rowCount++;
-            if (rowCount > 5) {
-                // Maximum reached
-                if (!topLeftGrid.getChildren().contains(warningMsg)) {
-                    topLeftGrid.add(warningMsg, 1, /*7*/6);
-                    PauseTransition pause = new PauseTransition(Duration.seconds(3));
-                    pause.setOnFinished(event -> {
-                        topLeftGrid.getChildren().remove(warningMsg); // Remove the warning message after 3 seconds
-                    });
-                    pause.play();
-                }
-            }
+        topLeftBox.getChildren().add(addCustomPlanet);
+        topLeftBox.setPadding(new Insets(30));
 
+
+        addCustomPlanet.setOnAction(e -> {
+            parameterDisplayPane.getChildren().clear();
+            setupCustomPlanet(parameterDisplayPane);
         });
-        Settings button1=new Settings();
-        button1.registerLabel(addCustomPlanet);
-        
-        topLeftGrid.add(addCustomPlanet, 1,/*9*/7);
+
 
         Separator separator1 = new Separator();
         separator1.setScaleX(39);
@@ -262,6 +235,13 @@ public class UI extends Parent {
             planets = new ArrayList<>();
             planets.add(new Planet("Sun", 750, 495, 333000, 100, 0, 0));
             planets.add(new Planet("Earth", 1000, 495, 1, 40, 0, 115.45));
+
+            isSettingPosition = false;awaitingVelocityClick = false;
+
+            selectedPlanet = null;
+            renderer.renderFrame(gc, planets, showGridState, canvas.getWidth(), canvas.getHeight(),selectedPlanet);
+            loadPlanetButtons(planets, planetsButtonBox);
+            loadPlanetSettings(selectedPlanet, parameterDisplayPane);
         });
 
         Rectangle preset2 = new Rectangle(180, 70);
@@ -294,6 +274,12 @@ public class UI extends Parent {
             planets.add(new Planet("Earth", 1000, 495, 1, 40, 0, 115.4));
             planets.add(new Planet("Moon",  970, 495, 0.01, 10, 0, 116.0));
 
+            isSettingPosition = false;awaitingVelocityClick = false;
+
+            selectedPlanet = null;
+            renderer.renderFrame(gc, planets, showGridState, canvas.getWidth(), canvas.getHeight(),selectedPlanet);
+            loadPlanetButtons(planets, planetsButtonBox);
+            loadPlanetSettings(selectedPlanet, parameterDisplayPane);
         });
 
         Rectangle preset3 = new Rectangle(180, 70);
@@ -324,6 +310,13 @@ public class UI extends Parent {
             planets.add(new Planet("Sun",   750, 495, 333000, 100, 0, 0));
             planets.add(new Planet("Earth", 1000, 495, 1, 40, 0, 115.4));
             planets.add(new Planet("Mars", 1150, 495, 0.05, 20, 0, 91.3));
+
+            isSettingPosition = false;awaitingVelocityClick = false;
+
+            selectedPlanet = null;
+            renderer.renderFrame(gc, planets, showGridState, canvas.getWidth(), canvas.getHeight(),selectedPlanet);
+            loadPlanetButtons(planets, planetsButtonBox);
+            loadPlanetSettings(selectedPlanet, parameterDisplayPane);
         });
         
         Rectangle preset4 = new Rectangle(180, 70);
@@ -354,12 +347,18 @@ public class UI extends Parent {
             planets.add(new Planet("Sun",   750, 495, 333000, 100, 0, 0));
             planets.add(new Planet("Venus", 950, 495, 0.82, 30, 0, 129.1));
             planets.add(new Planet("Earth", 1000, 495, 1,    40, 0, 115.4));
-           
+
+            isSettingPosition = false; awaitingVelocityClick = false;
+
+            selectedPlanet = null;
+            renderer.renderFrame(gc, planets, showGridState, canvas.getWidth(), canvas.getHeight(),selectedPlanet);
+            loadPlanetButtons(planets, planetsButtonBox);
+            loadPlanetSettings(selectedPlanet, parameterDisplayPane);
         });
 
  
         Pane leftContainer = new Pane();
-        leftContainer.getChildren().addAll(topLeftGrid, separator1, separator2,
+        leftContainer.getChildren().addAll(topLeftBox, separator1, separator2,
                 textPreset,finalPreset1, finalPreset2, finalPreset3,finalPreset4);
         root.setLeft(leftContainer);
 
@@ -386,15 +385,16 @@ public class UI extends Parent {
         check1.registerLabel(showGrid);
         check1.registerLabel(showGVectors);
         check1.registerLabel(showVVectors);
-  
-        Slider scale = new Slider(0.5, 3.5, 1);
-        scale.setShowTickLabels(true);
-        scale.setMajorTickUnit(0.5);
-        scale.setMinorTickCount(0);
-        scale.setShowTickMarks(true);
-        
-        scale.valueProperty().addListener((obs,oldval,newval)->{
-            System.out.println(newval.doubleValue());
+
+        Label GLabel = new Label("Gravitational Constant");
+        Slider GSlider = new Slider(3, 30, 9);
+        GSlider.setShowTickLabels(true);
+        GSlider.setMajorTickUnit(3);
+        GSlider.setMinorTickCount(0);
+        GSlider.setShowTickMarks(true);
+
+        GSlider.valueProperty().addListener((obs,oldval,newval)->{
+            Calculation.setG(newval.doubleValue());
         });
 
         Label timeLabel = new Label("Time");
@@ -418,7 +418,7 @@ public class UI extends Parent {
         bottomRight.setLayoutX(20);
         bottomRight.setLayoutY(550);
         bottomRight.getChildren().addAll(showPath, showGVectors, showVVectors,
-                showGrid, timeLabel, time);
+                showGrid, GLabel, GSlider, timeLabel, time);
 
         Button start = new Button("Start");
         start.setOnAction(e->{
@@ -431,21 +431,9 @@ public class UI extends Parent {
         });
         Button reset = new Button("Reset");
         reset.setOnAction(e->{
-          topLeftGrid.getChildren().removeAll(toggleGroup.getToggles());
-          rowCount=0;
           planets.clear();
-          gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-          gc.setFill(Color.BLACK);
-          gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-          
-          Toggle selectedToggle=toggleGroup.getSelectedToggle();
-          if(selectedToggle instanceof ToggleButton toggleButton){
-              Pane parameterPane=planetPaneMap.get(toggleButton);
-              if(parameterPane!=null&&parameterPane.getParent() instanceof Pane parentPane){
-                  parentPane.getChildren().remove(parameterPane);
-              }
-          }
-            
+          renderer.renderFrame(gc, planets, showGridState, canvas.getWidth(), canvas.getHeight(),selectedPlanet);
+          loadPlanetButtons(planets, planetsButtonBox);
         });
         
         Settings buttons= new Settings();
@@ -463,6 +451,9 @@ public class UI extends Parent {
         Pane rightContainer = new Pane();
         rightContainer.getChildren().addAll(/*topRight*/parameterDisplayPane, separator3, separator4,
                 bottomRight, start, pause, reset);
+        parameterDisplayPane.setAlignment(Pos.CENTER);
+        parameterDisplayPane.setPadding(new Insets(40));
+        parameterDisplayPane.setSpacing(20);
         root.setRight(rightContainer);
         
 
@@ -478,63 +469,50 @@ public class UI extends Parent {
 
             if (awaitingVelocityClick && selectedPlanet != null) {
                 // 3rd click: apply velocity
+                loadPlanetSettings(selectedPlanet, parameterDisplayPane);
                 Vector pos = selectedPlanet.getPosition();
                 double dx = x - pos.getX();
                 double dy = y - pos.getY();
                 selectedPlanet.setVelFromDrag(dx, dy);
+                renderer.renderFrame(gc, planets, showGridState, canvas.getWidth(), canvas.getHeight(),selectedPlanet);
                 System.out.println("Velocity set: " + selectedPlanet.getVelocity());
                 awaitingVelocityClick = false;
                 return;
             }
+            else if (isSettingPosition && selectedPlanet != null) {
+                selectedPlanet.setPosition(new Vector(x, y));  // Directly set x, y on existing Vec2
+                isSettingPosition = false;
+                System.out.printf("Moved to: %.1f, %.1f%n", x, y);
+                return;
+            }
+            else {
+                // Check if click is on a planet
+                for (Planet p : planets) {
+                    double dx = x - p.getPosition().getX();
+                    double dy = y - p.getPosition().getY();
+                    double distance = Math.sqrt(dx * dx + dy * dy);
 
-            // Check if click is on a planet
-            for (Planet p : planets) {
-                double dx = x - p.getPosition().getX();
-                double dy = y - p.getPosition().getY();
-                double distance = Math.sqrt(dx * dx + dy * dy);
-
-                if (distance <= p.getRadius()) {
-                    if (event.getClickCount() == 2 && p == selectedPlanet) {
-                        // Double-click on already selected planet: enter velocity mode
-                        awaitingVelocityClick = true;
-                        System.out.println("Double-click: Enter velocity set mode for " + p.getName());
-                    } else {
-                        // Single-click: select planet
-                        selectedPlanet = p;
-                        awaitingVelocityClick = false;
-                        System.out.println("Selected planet: " + p.getName());
+                    if (distance <= p.getRadius()) {
+                        if (event.getClickCount() == 2 && p == selectedPlanet) {
+                            // Double-click on already selected planet: enter velocity mode
+                            loadPlanetSettings(selectedPlanet, parameterDisplayPane);
+                            awaitingVelocityClick = true;
+                            System.out.println("Double-click: Enter velocity set mode for " + p.getName());
+                        } else {
+                            // Single-click: select planet
+                            selectedPlanet = p;
+                            loadPlanetSettings(selectedPlanet, parameterDisplayPane);
+                            renderer.renderFrame(gc, planets, showGridState, canvas.getWidth(), canvas.getHeight(), selectedPlanet);
+                            awaitingVelocityClick = false;
+                            System.out.println("Selected planet: " + p.getName());
+                        }
+                        return;
                     }
-                    return;
                 }
             }
 
             // Clicked empty space — reset
             awaitingVelocityClick = false;
-            Toggle activeButton = toggleGroup.getSelectedToggle();
-            if (!(activeButton instanceof ToggleButton selectedButton)) return;
-            Pane selectedPlanetPane = planetPaneMap.get(activeButton);
-            //if (!(selectedPlanetPane instanceof Pane pane)) return;
-
-            try {
-                double mass = Double.parseDouble(((TextField) selectedPlanetPane.lookup("#massField")).getText());
-                double velocity = Double.parseDouble(((TextField) selectedPlanetPane.lookup("#velocityField")).getText());
-                double radius = Double.parseDouble(((TextField) selectedPlanetPane.lookup("#radiusField")).getText());
-
-                Planet existingPlanet = planetObjectMap.get(selectedButton);
-
-                if (existingPlanet == null) {
-                    Planet newPlanet = new Planet("Planet", 700, 300, 500, 30,300,300);//added "10" as dummy; remove later
-                    planets.add(newPlanet);
-                    planetObjectMap.put(selectedButton, newPlanet);
-                } else {
-                    //existingPlanet.setX(x);
-                    //existingPlanet.setY(y);
-                }
-
-
-            } catch (NumberFormatException e) {
-                System.out.println("Invalid input in parameters.");
-            }
         });
         //to cancel hold action
         canvas.setOnMouseReleased(e -> {
@@ -548,40 +526,45 @@ public class UI extends Parent {
         showGVectors.setOnAction(e->{
             if (showGVectors.isSelected()) {
                 renderer.setDrawAccelerationVectors(true);
+                renderer.renderFrame(gc, planets, showGridState, canvas.getWidth(), canvas.getHeight(),selectedPlanet);
             }
             else {
                 renderer.setDrawAccelerationVectors(false);
+                renderer.renderFrame(gc, planets, showGridState, canvas.getWidth(), canvas.getHeight(),selectedPlanet);
             }
         });
 
         showVVectors.setOnAction(e->{
             if (showVVectors.isSelected()) {
                 renderer.setDrawVelocityVectors(true);
+                renderer.renderFrame(gc, planets, showGridState, canvas.getWidth(), canvas.getHeight(),selectedPlanet);
             }
             else {
                 renderer.setDrawVelocityVectors(false);
+                renderer.renderFrame(gc, planets, showGridState, canvas.getWidth(), canvas.getHeight(),selectedPlanet);
             }
         });
 
+        //to show path
+        showPath.setOnAction(e->{
+            showOrbitPaths = showPath.isSelected();
+            renderer.setDrawOrbits(showOrbitPaths);
+        });
 
         //To show grid
         showGrid.setOnAction(e->{
             if (showGrid.isSelected()) {
                 setShowGrid(true);
+                renderer.renderFrame(gc, planets, showGridState, canvas.getWidth(), canvas.getHeight(),selectedPlanet);
             }
             else {
                 setShowGrid(false);
+                renderer.renderFrame(gc, planets, showGridState, canvas.getWidth(), canvas.getHeight(),selectedPlanet);
             }
         });
 
-
-
-
-
         root.setCenter(canvas);
-        
         return root;
-        
     }
 
     // Set the functionality for exit button
@@ -628,126 +611,13 @@ public class UI extends Parent {
         settings.registerScene(scene);
     }
 
-    public void addPlanet(GridPane gridPane, ToggleGroup togglegroup, int row, int column) {
-        Stage planetStage = new Stage();
-        Button done = new Button("Done");
-        MenuButton planetType = new MenuButton("Select Planet Type");
-        
-        TextField chooseMassTextField = new TextField();
-        chooseMassTextField.setPromptText("Enter Mass...");
-        TextField chooseVelocityTextField = new TextField();
-        chooseVelocityTextField.setPromptText("Enter velocity...");
-        TextField chooseRadiusTextField = new TextField();
-        chooseRadiusTextField.setPromptText("Enter radius...");
-        
 
-        String[] planetNames = {"Sun", "Earth", "Moon", "Mars", "Venus", "Neptune"};
-
-        for (String planetName : planetNames) {
-            MenuItem item = new MenuItem(planetName);
-            
-            item.setOnAction(e -> {
-                selectedPlanetType = planetName;
-                planetType.setText(selectedPlanetType);         
-                Settings pt= new Settings();
-                pt.registerLabel(planetType);
-            });
-            planetType.getItems().add(item);
-            Settings planetSelection= new Settings();
-            planetSelection.registerMenuItems(item);
-        }
-        Label validChoice = new Label();
-        
-        Settings addplanet = new Settings();
-        addplanet.registerLabel(planetType);
-        addplanet.registerLabel(done);
-        addplanet.registerTextField(chooseMassTextField);
-        addplanet.registerTextField(chooseVelocityTextField);
-        addplanet.registerTextField(chooseRadiusTextField);
-          
-        done.setOnAction(e -> {
-
-            if (selectedPlanetType == null) {
-                validChoice.setText("You must choose a planet type");
-                addplanet.registerLabel(validChoice);
-            } else {
-                planetStage.close();
-                ToggleButton toggleButton = new ToggleButton(selectedPlanetType);
-                toggleButton.setToggleGroup(togglegroup);
-                toggleButton.setPrefSize(160, 10);
-                gridPane.add(toggleButton, row, column); 
-
-                VBox parameterPane = new VBox();
-                parameterPane.setPadding(new Insets(10));
-                parameterPane.getChildren().add(new Label(selectedPlanetType + " parameters"));
-           
-                Settings planets= new Settings();
-                planets.registerLabel(toggleButton);
-
-
-                Label velocityLabel = new Label("Initial Velocity: ");
-                Label metersPerSecond = new Label("m/s");
-                Label massLabel = new Label("Mass: ");
-                Label kg = new Label("kg");
-                Label radiusLabel = new Label("Radius Multiplier: ");
-                Label m = new Label("m");
-                
-                Settings planetParameters= new Settings();
-                planetParameters.registerLabel((Label)parameterPane.getChildren().get(0));
-                planetParameters.registerLabel(massLabel);
-                planetParameters.registerLabel(velocityLabel);
-                planetParameters.registerLabel(radiusLabel);
-                planetParameters.registerLabel(planetType);
-               
-
-                TextField velocityTextField = new TextField();
-                TextField massTextField = new TextField();
-                TextField radiusTextField = new TextField();
-
-                velocityTextField.setPrefSize(100, 10);
-                massTextField.setPrefSize(100, 10);
-                radiusTextField.setPrefSize(100, 10);
-
-                massTextField.setText(chooseMassTextField.getText());
-                massTextField.setId("massField");
-                velocityTextField.setText(chooseVelocityTextField.getText());
-                velocityTextField.setId("velocityField");
-                radiusTextField.setText(chooseRadiusTextField.getText());
-                radiusTextField.setId("radiusField");
-
-                HBox velocityHBox = new HBox(10, velocityTextField, metersPerSecond);
-                HBox massHBox = new HBox(10, massTextField, kg);
-                HBox radiusHBox = new HBox(10, radiusTextField, m);
-              
-                VBox velocityVBox = new VBox(velocityLabel, velocityHBox);
-                VBox massVBox = new VBox(massLabel, massHBox);
-                VBox radiusVBox = new VBox(radiusLabel, radiusHBox);  
-                              
-                parameterPane.setLayoutX(0);  //was 500
-                parameterPane.setLayoutY(55);
-                parameterPane.setSpacing(/*35*/50);
-                parameterPane.setPadding(new Insets(25));
-                parameterPane.getChildren().addAll(velocityVBox, massVBox, radiusVBox);
-                planetPaneMap.put(toggleButton, parameterPane);
-            }
-        });
-                
-        planetType.setMinSize(160, 10);
-        VBox vbox = new VBox(10, planetType, chooseMassTextField, chooseVelocityTextField, chooseRadiusTextField, validChoice, done);
-        vbox.setPadding(new Insets(10));
-        Scene scene = new Scene(vbox);
-        scene.getStylesheets().add("style.css");
-        planetStage.setScene(scene);
-        planetStage.show();
-        
-        addplanet.registerScene(scene);
-    }
-
-    /** Toggle grid on/off */
+    // Toggle grid on/off
     public void setShowGrid(boolean show) {
         this.showGridState = show;
     }
 
+    //animation loop
     public void startAnimation() {
         timer = new AnimationTimer() {
             @Override
@@ -757,11 +627,102 @@ public class UI extends Parent {
                 last = now;
 
                 Calculation.updateAll(planets, dt*timeScale);
-                renderer.renderFrame(gc, planets, showGridState,
-                        canvas.getWidth(), canvas.getHeight(),selectedPlanet);
+
+                renderer.renderFrame(gc, planets, showGridState, canvas.getWidth(), canvas.getHeight(),selectedPlanet);
+
+
+
             }      
     };  
     timer.start();
     }
 
+    public void loadPlanetButtons(List<Planet> planets, VBox vbox) {
+        vbox.getChildren().clear();
+        for (Planet planet : planets) {
+            Button button = new Button(planet.getName());
+            vbox.getChildren().add(button);
+
+            button.setOnAction(e -> {
+                selectedPlanet = planet;
+                loadPlanetSettings(selectedPlanet, parameterDisplayPane);
+                renderer.renderFrame(gc, planets, showGridState, canvas.getWidth(), canvas.getHeight(),selectedPlanet);
+            });
+        }
+    }
+
+    public void loadPlanetSettings(Planet planet, VBox vbox) {
+        vbox.getChildren().clear();
+        if (planet == null) {
+            vbox.getChildren().add(new Label("No planet selected!"));
+            return; }
+        vbox.getChildren().add(new Label("Name: " + planet.getName()));
+        vbox.getChildren().add(new Label("Base Mass: " + String.format("%.2e", planet.getBaseMass() * 5.972e24) + " kg"));
+        vbox.getChildren().add(new Label("Velocity: " + String.format("%.2f", planet.getVelocity().magnitude()) + " px/s"));
+        vbox.getChildren().add(new Label("Mass Multiplier"));
+
+        Slider massSlider = new Slider(0.5, 3, 1);
+        massSlider.setMaxWidth(150);
+        massSlider.setShowTickLabels(true);
+        massSlider.setShowTickMarks(true);
+        massSlider.setMajorTickUnit(0.5);
+        massSlider.setMinorTickCount(0);
+        massSlider.setSnapToTicks(true);
+        vbox.getChildren().add(massSlider);
+
+        massSlider.valueProperty().addListener((obs, oldVal, newVal) -> {
+            if (selectedPlanet != null) {
+                selectedPlanet.setMass(selectedPlanet.getBaseMass() * newVal.doubleValue());
+            }
+        });
+
+        //  Set Position Button
+        Button setPositionButton = new Button("Set Position");
+        setPositionButton.setOnAction(e -> {
+            isSettingPosition = true;
+            System.out.println("Click anywhere to move " + planet.getName());
+        });
+        vbox.getChildren().add(setPositionButton);
+
+        //set velocity button
+        Button setVelocityButton = new Button("Set Velocity");
+        setVelocityButton.setOnAction(e -> {
+            awaitingVelocityClick = true;
+        });
+        vbox.getChildren().add(setVelocityButton);
+
+        //delete planet button
+        Button deleteButton = new Button("Delete Planet");
+        deleteButton.setOnAction(e -> {
+            planets.remove(planet);
+        });
+        vbox.getChildren().add(deleteButton);
+    }
+
+    public void setupCustomPlanet(VBox parameterDisplayPane) {
+        // Create the ComboBox for planet selection
+        parameterDisplayPane.setPadding(new Insets(30));
+        ComboBox<Planet> planetComboBox = new ComboBox<>();
+        planetComboBox.setPromptText("Select New Planet");
+        planetComboBox.getItems().add(new Planet("Sun", 750, 496, 333000, 100, 0, 0));
+        planetComboBox.getItems().add(new Planet("Earth", 1000, 495, 1, 40, 0, 115.4));
+        planetComboBox.getItems().add(new Planet("Venus", 1100, 495, 0.815, 30, 0, 97.6));
+        planetComboBox.getItems().add(new Planet("Mars", 1200, 495, 0.107, 20, 0, 85.9));
+
+        // Create a VBox to hold the ComboBox and buttons
+        VBox planetSettingsVBox = new VBox();
+        planetSettingsVBox.getChildren().add(planetComboBox);
+
+        // Update settings based on planet selection
+        planetComboBox.setOnAction(e -> {
+            Planet selectedPlanet = planetComboBox.getValue();
+            planets.add(planetComboBox.getValue());
+            loadPlanetSettings(selectedPlanet, parameterDisplayPane);
+            loadPlanetButtons(planets, planetsButtonBox);
+        });
+
+        parameterDisplayPane.getChildren().clear();
+        parameterDisplayPane.getChildren().add(planetSettingsVBox);
+
+    }
 }
