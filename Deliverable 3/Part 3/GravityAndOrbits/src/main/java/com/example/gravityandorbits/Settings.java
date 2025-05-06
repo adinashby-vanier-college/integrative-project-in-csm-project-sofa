@@ -147,7 +147,7 @@ public class Settings{
       eng_fr.put("Add Custom Planet", "Ajouter Planètes Perso.");
       eng_fr.put("Show Path", "Montrer la Trajectoire");
       eng_fr.put("Show Grid", "Montrer la Grille");
-      eng_fr.put("Show Gravity Vectors", "Montrer les vecteurs de gravité");
+      eng_fr.put("Show Accel Vectors", "Montrer les vecteurs d'Accel");
       eng_fr.put("Show Velocity Vectors","Montrer les vecteurs de vitesse");
       eng_fr.put("Scale","Échelle");
       eng_fr.put("Start","Dém.");
@@ -285,7 +285,7 @@ public class Settings{
       fr_eng.put("Ajouter Planètes Perso.","Add Custom Planet");
       fr_eng.put("Montrer la Trajectoire","Show Path");
       fr_eng.put("Montrer la Grille","Show Grid");
-      fr_eng.put("Montrer les vecteurs de gravité","Show Gravity Vectors");
+      fr_eng.put("Montrer les vecteurs d'Accel","Show Accel Vectors");
       fr_eng.put("Montrer les vecteurs de vitesse","Show Velocity Vectors");
       fr_eng.put("Échelle","Scale");
       fr_eng.put("Dém.","Start");

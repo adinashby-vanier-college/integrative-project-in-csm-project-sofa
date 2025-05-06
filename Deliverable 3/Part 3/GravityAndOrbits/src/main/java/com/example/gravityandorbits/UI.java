@@ -373,9 +373,9 @@ public class UI extends Parent {
         preset4.setOnMouseClicked(e-> {
             // Preset functionality
             planets=new ArrayList<>();
-            planets.add(new Planet("Sun",   750, 495, 333000, 100,     0,       0));
-            planets.add(new Planet("Venus",  950, 495, 0.82,  30,  0,   42.9));
-            planets.add(new Planet("Earth", 1000, 495, 1, 40, 0, 36.5));
+            planets.add(new Planet("Sun",   750, 495, 333000, 100,0, 0));
+            planets.add(new Planet("Venus",  950, 495, 0.82,  30,0,  42.9));
+            planets.add(new Planet("Earth", 1050, 495, 1, 40, 0, 36.5));
            
         });
 
@@ -526,7 +526,7 @@ public class UI extends Parent {
                 Planet existingPlanet = planetObjectMap.get(selectedButton);
 
                 if (existingPlanet == null) {
-                    Planet newPlanet = new Planet("Planet", 700, 300, 500, 30,300,300);//added "10" as dummy; remove later
+                    Planet newPlanet = new Planet(selectedButton.getText(), 700, 300, 500, 30,300,300);//added "10" as dummy; remove later
                     planets.add(newPlanet);
                     planetObjectMap.put(selectedButton, newPlanet);
                 } else {
