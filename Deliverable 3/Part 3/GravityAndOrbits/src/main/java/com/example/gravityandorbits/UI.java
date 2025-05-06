@@ -64,7 +64,7 @@ public class UI extends Parent {
     MenuItem venus = new MenuItem("Venus");
     MenuItem neptune = new MenuItem("Neptune");
      
-    
+    AnimationTimer timer;
     
     public BorderPane initialize() {
         Main main = new Main(); 
@@ -341,7 +341,11 @@ public class UI extends Parent {
             preset3.getScene().setCursor(Cursor.DEFAULT); // Return cursor to default
         });
         preset3.setOnMouseClicked(e-> {
+            planets=new ArrayList<>();
             // Add functionality here
+            planets.add(new Planet("Sun",   750, 495, 333000, 100,     0,       0));
+            planets.add(new Planet("Earth", 1000, 495,    1, 40,     0,   36.5));
+            planets.add(new Planet("Mars",  1200, 495, 0.05,  20,  0,   25.8));
         });
         
         Rectangle preset4 = new Rectangle(180, 70);
@@ -368,6 +372,12 @@ public class UI extends Parent {
         });
         preset4.setOnMouseClicked(e-> {
             // Add functionality here
+            planets=new ArrayList<>();
+            // Add functionality here
+            planets.add(new Planet("Sun",   750, 495, 333000, 100,     0,       0));
+            planets.add(new Planet("Venus",  950, 495, 0.82,  30,  0,   42.9));
+            planets.add(new Planet("Earth", 1050, 495,    1, 30,  0,   36.5));
+           
         });
 
  
@@ -435,11 +445,11 @@ public class UI extends Parent {
 
         Button start = new Button("Start");
         start.setOnAction(e->{
-            
+            timer.start();
         });
         Button pause = new Button("Stop");
         pause.setOnAction(e->{
-            
+            timer.stop();
         });
         Button reset = new Button("Reset");
         reset.setOnAction(e->{
@@ -735,7 +745,7 @@ public class UI extends Parent {
     }
 
     public void startAnimation() {
-        AnimationTimer timer = new AnimationTimer() {
+        timer = new AnimationTimer() {
             private long last = 0;
             @Override
             public void handle(long now) {
@@ -746,9 +756,9 @@ public class UI extends Parent {
                 Calculation.updateAll(planets, dt*timeScale);
                 renderer.renderFrame(gc, planets, showGrid,
                         canvas.getWidth(), canvas.getHeight(),selectedPlanet);
-            }
-        };
-        timer.start();
+            }      
+    };  
+    timer.start();
     }
 
 }
