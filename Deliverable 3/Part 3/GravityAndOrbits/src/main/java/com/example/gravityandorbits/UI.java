@@ -57,6 +57,7 @@ public class UI extends Parent {
     private final Text warningMsg = new Text("Cannot add more than 5 planets.");
     private boolean showGrid = false;
     private double timeScale = 1.0;
+    private long last = 0;
     MenuItem sun = new MenuItem("Sun");
     MenuItem earth = new MenuItem("Earth");
     MenuItem moon = new MenuItem("Moon");
@@ -400,7 +401,7 @@ public class UI extends Parent {
         separator4.setLayoutY(0);
 
         CheckBox showPath = new CheckBox("Show Path");
-        CheckBox showGVectors = new CheckBox("Show Gravity Vectors");
+        CheckBox showGVectors = new CheckBox("Show Accel Vectors");
         CheckBox showVVectors = new CheckBox("Show Velocity Vectors");
         CheckBox showGrid = new CheckBox("Show Grid");
         
@@ -445,6 +446,7 @@ public class UI extends Parent {
 
         Button start = new Button("Start");
         start.setOnAction(e->{
+            last = 0;
             timer.start();
         });
         Button pause = new Button("Stop");
@@ -746,7 +748,6 @@ public class UI extends Parent {
 
     public void startAnimation() {
         timer = new AnimationTimer() {
-            private long last = 0;
             @Override
             public void handle(long now) {
                 if (last == 0) { last = now; return; }
