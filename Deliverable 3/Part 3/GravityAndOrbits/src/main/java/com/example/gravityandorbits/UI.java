@@ -52,6 +52,7 @@ public class UI extends Parent {
     private StackPane parameterDisplayPane = new StackPane();
     public GraphicsContext gc = canvas.getGraphicsContext2D();
     public String selectedPlanetType = null;
+    public Planet selectedPlanet = null;
     private int rowCount = 0;
     private final Text warningMsg = new Text("Cannot add more than 5 planets.");
     private boolean showGrid = false;
@@ -484,13 +485,26 @@ public class UI extends Parent {
         gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
         canvas.setOnMouseClicked(event -> {
-            Toggle activeButton = toggleGroup.getSelectedToggle();
 
-            if (!(activeButton instanceof ToggleButton selectedButton)) return;
+
+
 
             double x = event.getX();
             double y = event.getY();
 
+            //check if clicks on planet
+            for (Planet p : planets) {
+                double dx = x - p.getPosition().getX();
+                double dy = y - p.getPosition().getY();
+                double distance = Math.sqrt(dx*dx + dy*dy);
+                if (distance <= p.getRadius()) {
+                    selectedPlanet = p;
+                    System.out.println("Selected: " + p.getName());
+                    break;
+                }
+            }
+            Toggle activeButton = toggleGroup.getSelectedToggle();
+            if (!(activeButton instanceof ToggleButton selectedButton)) return;
             Pane selectedPlanetPane = planetPaneMap.get(activeButton);
             //if (!(selectedPlanetPane instanceof Pane pane)) return;
 
@@ -731,7 +745,7 @@ public class UI extends Parent {
 
                 Calculation.updateAll(planets, dt*timeScale);
                 renderer.renderFrame(gc, planets, showGrid,
-                        canvas.getWidth(), canvas.getHeight());
+                        canvas.getWidth(), canvas.getHeight(),selectedPlanet);
             }
         };
         timer.start();

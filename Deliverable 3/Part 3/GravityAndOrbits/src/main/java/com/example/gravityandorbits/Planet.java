@@ -28,6 +28,7 @@ public class Planet {
     public double getMass() { return mass; }
     public double getRadius() { return radius; }
     public Color getColor() { return color; }
+    public String getName() { return planetName; }
 
     // Setters
     public void setPosition(Vector position) { this.position = position; }

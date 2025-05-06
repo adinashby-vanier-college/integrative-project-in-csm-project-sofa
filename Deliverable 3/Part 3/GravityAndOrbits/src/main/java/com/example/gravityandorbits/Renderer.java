@@ -40,10 +40,11 @@ public class Renderer {
                             List<Planet> planets,
                             boolean showGrid,
                             double width,
-                            double height) {
+                            double height,
+                            Planet selectedPlanet) {
         clearCanvas(gc, width, height);
         if (showGrid) drawGrid(gc, width, height);
-        drawPlanets(gc, planets);
+        drawPlanets(gc, planets, selectedPlanet);
     }
 
     private void clearCanvas(GraphicsContext gc, double w, double h) {
@@ -62,7 +63,7 @@ public class Renderer {
         }
     }
 
-    private void drawPlanets(GraphicsContext gc, List<Planet> planets) {
+    private void drawPlanets(GraphicsContext gc, List<Planet> planets, Planet selectedPlanet) {
         for (Planet p : planets) {
             double x = p.getPosition().getX();
             double y = p.getPosition().getY();
@@ -86,6 +87,13 @@ public class Renderer {
                 gc.setStroke(ACCEL_COLOR);
                 gc.setLineWidth(3);
                 gc.strokeLine(x, y, x + a.getX(), y + a.getY());
+            }
+
+            // Highlight selected planet
+            if (p == selectedPlanet) {
+                gc.setStroke(Color.YELLOW);
+                gc.setLineWidth(2);
+                gc.strokeOval(x - r - 5, y - r - 5, (r + 5) * 2, (r + 5) * 2);
             }
 
         }
