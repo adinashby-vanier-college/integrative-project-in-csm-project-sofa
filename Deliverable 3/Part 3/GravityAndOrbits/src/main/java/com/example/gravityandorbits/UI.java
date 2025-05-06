@@ -542,7 +542,7 @@ public class UI extends Parent {
                 Planet existingPlanet = planetObjectMap.get(selectedButton);
 
                 if (existingPlanet == null) {
-                    Planet newPlanet = new Planet("Planet", 700, 300, 500, 30,300,300);//added "10" as dummy; remove later
+                    Planet newPlanet = new Planet(selectedButton.getText(), 700, 300, 500, 30,300,300);//added "10" as dummy; remove later
                     planets.add(newPlanet);
                     planetObjectMap.put(selectedButton, newPlanet);
                 } else {

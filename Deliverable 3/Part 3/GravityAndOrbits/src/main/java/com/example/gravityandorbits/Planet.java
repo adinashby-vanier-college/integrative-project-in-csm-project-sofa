@@ -35,8 +35,10 @@ public class Planet {
                 this.image=new Image("mars.png");
                 break;
             case "Venus":
-                this.image=new Image ("venus.png");
+                this.image=new Image("venus.png");
                 break;
+            case "Neptune":
+                this.image=new Image("neptune.png");
             default:
                this.color=Color.RED;
         }
