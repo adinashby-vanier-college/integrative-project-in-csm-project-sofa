@@ -70,9 +70,12 @@ public class Renderer {
             double r = p.getRadius();
 
             // Planet body
+            if(p.image!=null){
+                gc.drawImage(p.image, x - r, y - r, r * 2, r * 2);
+            }else{
             gc.setFill(p.getColor());
             gc.fillOval(x - r, y - r, r * 2, r * 2);
-
+            }
             // Velocity vector
             if(drawVelocityVectors){
                 Vector v = p.getVelocity().multiply(VEL_SCALE);

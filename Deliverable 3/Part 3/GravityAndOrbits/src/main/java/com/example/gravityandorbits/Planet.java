@@ -1,5 +1,6 @@
 package com.example.gravityandorbits;
 
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
 public class Planet {
@@ -10,6 +11,7 @@ public class Planet {
     private double radius;
     private Color color;
     private String planetName;
+    public Image image;
 
     public Planet(String name, double x, double y, double mass, double radius, double vx, double vy) {
         this.planetName = name;
@@ -18,7 +20,26 @@ public class Planet {
         this.acceleration = new Vector(0, 0);
         this.mass = mass;
         this.radius = radius;
-        this.color = Color.RED;
+        //this.color = Color.RED;
+        switch(name){
+            case "Sun":
+                this.image=new Image("sun.png");
+                break;
+            case "Earth":
+                this.image=new Image("earth.png");
+                break;
+            case "Moon":
+                this.image=new Image("moon.png");
+                break;
+            case "Mars":
+                this.image=new Image("mars.png");
+                break;
+            case "Venus":
+                this.image=new Image ("venus.png");
+                break;
+            default:
+               this.color=Color.RED;
+        }
     }
 
     // Getters
