@@ -8,11 +8,11 @@ import java.util.List;
 public class Renderer {
     private static final Color BACKGROUND_COLOR = Color.BLACK;
     private static final Color GRID_COLOR       = new Color(1,1,1,0.3);
-    private static final Color ACCEL_COLOR      = Color.LIGHTGREEN;
+    private static final Color ACCEL_COLOR      = Color.RED;
     private static final Color VEL_COLOR      = Color.LIGHTBLUE;
     private static final int   GRID_SPACING     = 25;
-    private static final double ACCEL_SCALE     = 10;
-    private static final double VEL_SCALE     = 2;
+    private static final double ACCEL_SCALE     = 2;
+    public static final double VEL_SCALE     = 2;
 
 
     private boolean drawOrbits = true;

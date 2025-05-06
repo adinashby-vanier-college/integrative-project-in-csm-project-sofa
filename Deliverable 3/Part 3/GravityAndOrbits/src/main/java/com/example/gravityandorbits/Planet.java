@@ -60,4 +60,5 @@ public class Planet {
     public void setMass(double mass) { this.mass = mass; }
     public void setRadius(double radius) { this.radius = radius; }
     public void setColor(Color color) { this.color = color; }
+    public void setVelFromDrag(double vx, double vy) {this.velocity = new Vector(vx/Renderer.VEL_SCALE, vy/Renderer.VEL_SCALE);}
 }

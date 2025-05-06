@@ -4,6 +4,7 @@ import static com.example.gravityandorbits.Settings.applyLanguageToAllLabels;
 import static com.example.gravityandorbits.Settings.applyLanguageToMenuBar;
 import javafx.animation.AnimationTimer;
 import javafx.animation.PauseTransition;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.geometry.*;
 import javafx.geometry.Insets;
@@ -53,18 +54,14 @@ public class UI extends Parent {
     public GraphicsContext gc = canvas.getGraphicsContext2D();
     public String selectedPlanetType = null;
     public Planet selectedPlanet = null;
+    private boolean awaitingVelocityClick = false;
     private int rowCount = 0;
     private final Text warningMsg = new Text("Cannot add more than 5 planets.");
-    private boolean showGrid = false;
+    private boolean showGridState = false;
     private double timeScale = 1.0;
     private long last = 0;
-    MenuItem sun = new MenuItem("Sun");
-    MenuItem earth = new MenuItem("Earth");
-    MenuItem moon = new MenuItem("Moon");
-    MenuItem mars = new MenuItem("Mars");
-    MenuItem venus = new MenuItem("Venus");
-    MenuItem neptune = new MenuItem("Neptune");
-     
+    private boolean velocitySetMode = false;
+    private Timeline longPressTimer;
     AnimationTimer timer;
     
     public BorderPane initialize() {
@@ -283,7 +280,7 @@ public class UI extends Parent {
             // Preset functionality
             planets = new ArrayList<>();
             planets.add(new Planet("Sun", 750, 495, 333000, 100, 0, 0));
-            planets.add(new Planet("Earth", 1000, 495, 1, 40, 0, 36.5));
+            planets.add(new Planet("Earth", 1000, 495, 1, 40, 0, 115.45));
         });
 
         Rectangle preset2 = new Rectangle(180, 70);
@@ -312,9 +309,9 @@ public class UI extends Parent {
             // Preset functionality
             planets = new ArrayList<>();
             // Place Sun at center
-            planets.add(new Planet("Sun",   750, 495, 333000, 100,     0,       0));
-            planets.add(new Planet("Earth", 1000, 495, 1, 40, 0, 36.5));
-            planets.add(new Planet("Moon",  970, 495, 0.01,  10,  0.324,   -36.5));
+            planets.add(new Planet("Sun",   750, 495, 333000, 100, 0, 0));
+            planets.add(new Planet("Earth", 1000, 495, 1, 40, 0, 115.4));
+            planets.add(new Planet("Moon",  970, 495, 0.01, 10, 0, 116.0));
 
         });
 
@@ -343,9 +340,9 @@ public class UI extends Parent {
         preset3.setOnMouseClicked(e-> {
             // Preset functionality
             planets=new ArrayList<>();
-            planets.add(new Planet("Sun",   750, 495, 333000, 100,     0,       0));
-            planets.add(new Planet("Earth", 1000, 495,    1, 40,     0,   36.5));
-            planets.add(new Planet("Mars",  1200, 495, 0.05,  20,  0,   25.8));
+            planets.add(new Planet("Sun",   750, 495, 333000, 100, 0, 0));
+            planets.add(new Planet("Earth", 1000, 495, 1, 40, 0, 115.4));
+            planets.add(new Planet("Mars", 1150, 495, 0.05, 20, 0, 91.3));
         });
         
         Rectangle preset4 = new Rectangle(180, 70);
@@ -373,9 +370,9 @@ public class UI extends Parent {
         preset4.setOnMouseClicked(e-> {
             // Preset functionality
             planets=new ArrayList<>();
-            planets.add(new Planet("Sun",   750, 495, 333000, 100,0, 0));
-            planets.add(new Planet("Venus",  950, 495, 0.82,  30,0,  42.9));
-            planets.add(new Planet("Earth", 1050, 495, 1, 40, 0, 36.5));
+            planets.add(new Planet("Sun",   750, 495, 333000, 100, 0, 0));
+            planets.add(new Planet("Venus", 950, 495, 0.82, 30, 0, 129.1));
+            planets.add(new Planet("Earth", 1000, 495, 1,    40, 0, 115.4));
            
         });
 
@@ -436,9 +433,9 @@ public class UI extends Parent {
         sliders.registerLabel(timeLabel);
         
         VBox bottomRight = new VBox();
-        bottomRight.setSpacing(/*17*/25);
+        bottomRight.setSpacing(25);
         bottomRight.setLayoutX(20);
-        bottomRight.setLayoutY(/*390*/550);
+        bottomRight.setLayoutY(550);
         bottomRight.getChildren().addAll(showPath, showGVectors, showVVectors,
                 showGrid, timeLabel, time);
 
@@ -495,24 +492,43 @@ public class UI extends Parent {
         gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
         canvas.setOnMouseClicked(event -> {
-
-
-
-
             double x = event.getX();
             double y = event.getY();
 
-            //check if clicks on planet
+            if (awaitingVelocityClick && selectedPlanet != null) {
+                // 3rd click: apply velocity
+                Vector pos = selectedPlanet.getPosition();
+                double dx = x - pos.getX();
+                double dy = y - pos.getY();
+                selectedPlanet.setVelFromDrag(dx, dy);
+                System.out.println("Velocity set: " + selectedPlanet.getVelocity());
+                awaitingVelocityClick = false;
+                return;
+            }
+
+            // Check if click is on a planet
             for (Planet p : planets) {
                 double dx = x - p.getPosition().getX();
                 double dy = y - p.getPosition().getY();
-                double distance = Math.sqrt(dx*dx + dy*dy);
+                double distance = Math.sqrt(dx * dx + dy * dy);
+
                 if (distance <= p.getRadius()) {
-                    selectedPlanet = p;
-                    System.out.println("Selected: " + p.getName());
-                    break;
+                    if (event.getClickCount() == 2 && p == selectedPlanet) {
+                        // Double-click on already selected planet: enter velocity mode
+                        awaitingVelocityClick = true;
+                        System.out.println("Double-click: Enter velocity set mode for " + p.getName());
+                    } else {
+                        // Single-click: select planet
+                        selectedPlanet = p;
+                        awaitingVelocityClick = false;
+                        System.out.println("Selected planet: " + p.getName());
+                    }
+                    return;
                 }
             }
+
+            // Clicked empty space — reset
+            awaitingVelocityClick = false;
             Toggle activeButton = toggleGroup.getSelectedToggle();
             if (!(activeButton instanceof ToggleButton selectedButton)) return;
             Pane selectedPlanetPane = planetPaneMap.get(activeButton);
@@ -526,7 +542,7 @@ public class UI extends Parent {
                 Planet existingPlanet = planetObjectMap.get(selectedButton);
 
                 if (existingPlanet == null) {
-                    Planet newPlanet = new Planet(selectedButton.getText(), 700, 300, 500, 30,300,300);//added "10" as dummy; remove later
+                    Planet newPlanet = new Planet("Planet", 700, 300, 500, 30,300,300);//added "10" as dummy; remove later
                     planets.add(newPlanet);
                     planetObjectMap.put(selectedButton, newPlanet);
                 } else {
@@ -537,6 +553,13 @@ public class UI extends Parent {
 
             } catch (NumberFormatException e) {
                 System.out.println("Invalid input in parameters.");
+            }
+        });
+        //to cancel hold action
+        canvas.setOnMouseReleased(e -> {
+            if (longPressTimer != null) {
+                longPressTimer.stop();
+                longPressTimer = null;
             }
         });
 
@@ -741,7 +764,7 @@ public class UI extends Parent {
 
     /** Toggle grid on/off */
     public void setShowGrid(boolean show) {
-        this.showGrid = show;
+        this.showGridState = show;
     }
 
     public void startAnimation() {
@@ -753,7 +776,7 @@ public class UI extends Parent {
                 last = now;
 
                 Calculation.updateAll(planets, dt*timeScale);
-                renderer.renderFrame(gc, planets, showGrid,
+                renderer.renderFrame(gc, planets, showGridState,
                         canvas.getWidth(), canvas.getHeight(),selectedPlanet);
             }      
     };  
