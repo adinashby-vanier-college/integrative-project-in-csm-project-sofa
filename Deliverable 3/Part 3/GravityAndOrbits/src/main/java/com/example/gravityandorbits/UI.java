@@ -280,10 +280,9 @@ public class UI extends Parent {
             preset1.getScene().setCursor(Cursor.DEFAULT); // Return cursor to default
         });
         preset1.setOnMouseClicked(e-> {
-            // Add functionality here
+            // Preset functionality
             planets = new ArrayList<>();
             planets.add(new Planet("Sun", 750, 495, 333000, 100, 0, 0));
-
             planets.add(new Planet("Earth", 1000, 495, 1, 40, 0, 36.5));
         });
 
@@ -310,12 +309,12 @@ public class UI extends Parent {
             preset2.getScene().setCursor(Cursor.DEFAULT); // Return cursor to default
         });
         preset2.setOnMouseClicked(e-> {
-            // Add functionality here
+            // Preset functionality
             planets = new ArrayList<>();
             // Place Sun at center
-            planets.add(new Planet("Sun",   750, 495, 1000, 20,     0,       0));
-            planets.add(new Planet("Earth", 950, 495,    1, 10,     0,   -2.236));
-            planets.add(new Planet("Moon",  970, 495, 0.01,  5,  0.224,   -2.236));
+            planets.add(new Planet("Sun",   750, 495, 333000, 100,     0,       0));
+            planets.add(new Planet("Earth", 1000, 495, 1, 40, 0, 36.5));
+            planets.add(new Planet("Moon",  970, 495, 0.01,  10,  0.324,   -36.5));
 
         });
 
@@ -342,8 +341,8 @@ public class UI extends Parent {
             preset3.getScene().setCursor(Cursor.DEFAULT); // Return cursor to default
         });
         preset3.setOnMouseClicked(e-> {
+            // Preset functionality
             planets=new ArrayList<>();
-            // Add functionality here
             planets.add(new Planet("Sun",   750, 495, 333000, 100,     0,       0));
             planets.add(new Planet("Earth", 1000, 495,    1, 40,     0,   36.5));
             planets.add(new Planet("Mars",  1200, 495, 0.05,  20,  0,   25.8));
@@ -372,12 +371,11 @@ public class UI extends Parent {
             preset4.getScene().setCursor(Cursor.DEFAULT); // Return cursor to default
         });
         preset4.setOnMouseClicked(e-> {
-            // Add functionality here
+            // Preset functionality
             planets=new ArrayList<>();
-            // Add functionality here
             planets.add(new Planet("Sun",   750, 495, 333000, 100,     0,       0));
             planets.add(new Planet("Venus",  950, 495, 0.82,  30,  0,   42.9));
-            planets.add(new Planet("Earth", 1050, 495,    1, 30,  0,   36.5));
+            planets.add(new Planet("Earth", 1000, 495, 1, 40, 0, 36.5));
            
         });
 
