@@ -65,7 +65,6 @@ public class UI extends Parent {
     AnimationTimer timer;
     
     public BorderPane initialize() {
-        Main main = new Main(); 
         BorderPane root = new BorderPane();  
         // MenuBar
         MenuBar menuBar = new MenuBar();
@@ -74,20 +73,6 @@ public class UI extends Parent {
         exit.setOnAction(e -> {
             exitButton();
         });
-        Menu file = new Menu("File");
-        MenuItem save = new MenuItem("Save");
-        MenuItem load = new MenuItem("Load");
-        MenuItem delete = new MenuItem("Delete");
-        save.setOnAction(e-> {
-            //Add func.
-        });
-        load.setOnAction(e-> {
-            FileManager.loadAnimation(new Stage());
-        });
-        delete.setOnAction(e-> {
-            FileManager.deleteAnimation(new Stage());
-        });
-        file.getItems().addAll(save, load, delete);
         Menu settings = new Menu("Settings");
         MenuItem Appearance= new MenuItem("Theme");
         Appearance.setOnAction(e->{
@@ -109,12 +94,11 @@ public class UI extends Parent {
         helpMenu.getItems().addAll(help);
         settings.getItems().addAll(Appearance,Language);
      
-        menuBar.getMenus().addAll(Exit, file, settings, helpMenu);
+        menuBar.getMenus().addAll(Exit, settings, helpMenu);
         root.setTop(menuBar);
         
         Settings Menu= new Settings();
         Menu.registerMenu(Exit);
-        Menu.registerMenu(file);
         Menu.registerMenu(settings);
         Menu.registerMenu(helpMenu);
 
@@ -123,9 +107,6 @@ public class UI extends Parent {
         MenuItem.registerMenuItems(help);
         MenuItem.registerMenuItems(Appearance);
         MenuItem.registerMenuItems(Language);
-        MenuItem.registerMenuItems(save);
-        MenuItem.registerMenuItems(load);
-        MenuItem.registerMenuItems(delete);
 
         planets.add(new Planet("Sun", 400, 300, 333000, 30, 0, 0));
 
